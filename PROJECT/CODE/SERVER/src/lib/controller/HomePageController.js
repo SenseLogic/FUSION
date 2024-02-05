@@ -1,16 +1,11 @@
+// -- IMPORTS
+
+import { propertyService } from '../service/PropertyService';
+
 // -- TYPES
 
 export class HomePageController
 {
-    // -- CONSTRUCTORS
-
-    constructor(
-        propertyService
-        )
-    {
-        this.propertyService = propertyService;
-    }
-
     // -- OPERATIONS
 
     async processRequest(
@@ -20,7 +15,7 @@ export class HomePageController
     {
         return (
             {
-                favoritePropertyArray : this.propertyService.getFavoritePropertyArray()
+                favoritePropertyArray : await propertyService.getFavoritePropertyArray()
             }
             );
     }

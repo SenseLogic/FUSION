@@ -2,8 +2,9 @@
 
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
-import fastifyMySQL from '@fastify/mysql';
-import { PropertyService } from './lib/service/PropertyService';
+import fastifyStatic from '@fastify/static';
+import fs from 'fs';
+import path from 'path';
 import { HomePageController } from './lib/controller/HomePageController';
 import { PropertiesPageController } from './lib/controller/PropertiesPageController';
 import { PropertyPageController } from './lib/controller/PropertyPageController';
@@ -20,20 +21,18 @@ fastify.register(
     );
 
 fastify.register(
-    fastifyMySQL,
+    fastifyStatic,
     {
-        promise: true,
-        connectionString: 'mysql://root:@localhost/fusion_project'
+        root : path.join( __dirname, 'public' ),
+        prefix : '/'
     }
     );
 
-console.dir( fastify );
-let propertyService = new PropertyService( fastify.mysql );
 let homePageController = new HomePageController();
 let propertiesPageController = new PropertiesPageController();
 let propertyPageController = new PropertyPageController();
 
-fastify.get(
+fastify.post(
     '/page/home',
     async ( request, reply ) =>
     {
@@ -41,7 +40,7 @@ fastify.get(
     }
     );
 
-fastify.get(
+fastify.post(
     '/page/properties',
     async ( request, reply ) =>
     {
@@ -49,13 +48,37 @@ fastify.get(
     }
     );
 
-fastify.get(
+fastify.post(
     '/page/property/:id',
     async ( request, reply ) =>
     {
         return await propertyPageController.processRequest( request, reply );
     }
     );
+
+fastify.setNotFoundHandler(
+    async ( request, reply ) =>
+    {
+        let htmlFilePath = path.join( __dirname, 'public', 'index.html' );
+        let htmlFileContent = fs.readFileSync( htmlFilePath, 'utf8' );
+        reply.type( 'text/html' ).send( htmlFileContent );
+    }
+    );
+
+let start =
+    async () =>
+    {
+        try
+        {
+            await fastify.listen( { port: 3000 } );
+        }
+        catch ( error )
+        {
+            fastify.log.error( error );
+
+            process.exit( 1 );
+        }
+    };
 
 fastify.ready(
     async err =>
@@ -66,20 +89,6 @@ fastify.ready(
         }
         else
         {
-            let start =
-                async () =>
-                {
-                    try
-                    {
-                        await fastify.listen( { port: 3000 } );
-                    }
-                    catch ( error )
-                    {
-                        fastify.log.error( error );
-                        process.exit( 1 );
-                    }
-                };
-
             start();
         }
     }

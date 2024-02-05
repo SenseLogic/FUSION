@@ -8,8 +8,9 @@ Startup project for hybrid Svelte applications.
 
 *   axios
 *   capacitor
+*   eureka
 *   fastify
-*   fastify-mysql
+*   gist
 *   svelte
 *   svelte-routing
 

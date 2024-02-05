@@ -1,16 +1,11 @@
+// -- IMPORTS
+
+import { propertyService } from '../service/PropertyService';
+
 // -- TYPES
 
 export class PropertiesPageController
 {
-    // -- CONSTRUCTORS
-
-    constructor(
-        propertyService
-        )
-    {
-        this.propertyService = propertyService;
-    }
-
     // -- OPERATIONS
 
     async processRequest(
@@ -20,7 +15,7 @@ export class PropertiesPageController
     {
         return (
             {
-                propertyArray : this.propertyService.getPropertyArray()
+                propertyArray : await propertyService.getPropertyArray()
             }
             );
     }

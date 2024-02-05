@@ -1,2 +1,1 @@
-yarn run dev --open
-pause
+call yarn run dev --open

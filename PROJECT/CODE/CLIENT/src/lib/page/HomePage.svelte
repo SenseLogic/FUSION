@@ -15,7 +15,7 @@
         {
             try
             {
-                let response = await axios.get( 'http://localhost:3000/page/home' );
+                let response = await axios.post( 'http://localhost:3000/page/home' );
                 favoritePropertyArray = response.data.favoritePropertyArray;
             }
             catch ( error )
@@ -46,9 +46,11 @@
     <div>
         <h1>Favorite Properties</h1>
         { #each favoritePropertyArray as property }
-            <div class="property">
-                <p>{ property.name }</p>
-            </div>
+            <Link to={ `/property/${property.id}` }>
+                <div class="property">
+                    <p>{ property.title }</p>
+                </div>
+            </Link>
         { /each}
         <Link to="/properties">See more</Link>
     </div>

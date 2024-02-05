@@ -18,7 +18,7 @@
         {
             try
             {
-                let response = await axios.get( `http://localhost:3000/page/property/${ id }` );
+                let response = await axios.post( `http://localhost:3000/page/property/${ id }` );
                 property = response.data.property;
             }
             catch ( error )
@@ -43,7 +43,7 @@
     <div class="hourglass">Loading...</div>
 { :else }
     <div>
-        <h1>{ property.name }</h1>
+        <h1>{ property.title }</h1>
         <p>{ property.description }</p>
     </div>
 { /if }

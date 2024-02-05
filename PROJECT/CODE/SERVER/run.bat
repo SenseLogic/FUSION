@@ -1,2 +1,1 @@
 yarn run start
-pause

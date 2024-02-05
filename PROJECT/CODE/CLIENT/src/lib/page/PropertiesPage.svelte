@@ -15,7 +15,7 @@
         {
             try
             {
-                let response = await axios.get( 'http://localhost:3000/page/properties' );
+                let response = await axios.post( 'http://localhost:3000/page/properties' );
                 propertyArray = response.data.propertyArray;
             }
             catch ( error )
@@ -48,7 +48,7 @@
         { #each propertyArray as property }
             <Link to={ `/property/${property.id}` }>
                 <div class="property">
-                    <p>{ property.name }</p>
+                    <p>{ property.title }</p>
                 </div>
             </Link>
         { /each}

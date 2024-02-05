@@ -1,26 +1,29 @@
-// -- TYPES
+// -- IMPORTS
 
-export class PropertyService
+import { getMapById, logError } from 'senselogic-gist';
+import { propertyTable } from '../database';
+
+// -- FUNCTIONS
+
+class PropertyService
 {
     // -- CONSTRUCTORS
 
     constructor(
-        database
         )
     {
-        this.database = database;
+        this.cachedPropertyArray = null;
+        this.cachedPropertyByIdMap = null;
     }
 
-    // -- OPERATIONS
+    // -- INQUIRIES
 
     async getPropertyArray(
         )
     {
-        let connection = await this.database.getConnection();
-        let [ rowArray, fieldArray ] = await connection.query( 'select * from PROPERTY' );
-        connection.release();
-
-        return rowArray;
+        return (
+            await propertyTable.selectRows()
+            );
     }
 
     // ~~
@@ -28,23 +31,69 @@ export class PropertyService
     async getFavoritePropertyArray(
         )
     {
-        let connection = await this.database.getConnection();
-        let [ rowArray, fieldArray ] = await connection.query( 'select * from PROPERTY where isFavorite = true' );
-        connection.release();
-
-        return rowArray;
+        return (
+            await propertyTable.selectRows(
+                {
+                    where : [ [ 'isFavorite' ], '=', 1 ],
+                    order : 'number'
+                }
+                )
+            );
     }
 
     // ~~
 
     async getPropertyById(
-        id
+        propertyId
         )
     {
-        let connection = await this.database.getConnection();
-        let [ rowArray, fieldArray ] = await connection.query( 'select * from PROPERTY where id = ?', [ id ] );
-        connection.release();
+        return (
+            await propertyTable.selectRow(
+                {
+                    where : [ [ 'id' ], '=', propertyId ]
+                }
+                )
+            );
+    }
 
-        return rowArray.length > 0 ? rowArray[ 0 ] : null;
+    // -- OPERATIONS
+
+    clearCache(
+        )
+    {
+        this.cachedPropertyArray = null;
+        this.cachedPropertyByIdMap = null;
+    }
+
+    // ~~
+
+    async getCachedPropertyArray(
+        )
+    {
+        if ( this.cachedPropertyArray === null )
+        {
+            this.cachedPropertyArray = await this.getPropertyArray();
+        }
+
+        return this.cachedPropertyArray;
+    }
+
+    // ~~
+
+    async getCachedPropertyByIdMap(
+        )
+    {
+        if ( this.cachedPropertyByIdMap === null )
+        {
+            this.cachedPropertyByIdMap = getMapById( await this.getCachedPropertyArray() );
+        }
+
+        return this.cachedPropertyByIdMap;
     }
 }
+
+// -- VARIABLES
+
+export let propertyService
+    = new PropertyService();
+console.log( propertyService );
