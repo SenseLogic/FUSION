@@ -1,0 +1,27 @@
+SPACE_TYPE
+
+    id number name
+
+        bedroom
+            ~ 1
+            ~ Bedroom
+
+        bathroom
+            ~ 2
+            ~ Bathroom
+
+        dining-room
+            ~ 3
+            ~ Dining room
+
+        kitchen
+            ~ 4
+            ~ Kitchen
+
+        living-room
+            ~ 5
+            ~ Living room
+
+        office
+            ~ 6
+            ~ Office
