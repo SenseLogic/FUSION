@@ -8,9 +8,9 @@ Startup project for hybrid Svelte applications.
 
 *   axios
 *   capacitor
-*   eureka
 *   fastify
 *   gist
+*   supabase
 *   svelte
 *   svelte-routing
 
