@@ -1,0 +1,3 @@
+define_environment_variables.bat
+CODE/SERVER/.env
+DATABASE/*.sql

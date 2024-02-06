@@ -1,15 +1,78 @@
-fusion_project
+public
+
+    LANGUAGE | dropped
+
+        code : STRING | key, unique
+        number : FLOAT64
+        name : STRING
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
+
+    CONTINENT | dropped
+
+        code : STRING | key, unique
+        name : STRING
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
+
+    COUNTRY | dropped
+
+        code : STRING | key, unique
+        number : FLOAT64
+        name : STRING
+        fullName : STRING
+        continentCode : CONTINENT.code
+        iconImagePath : STRING = "/image/flag/{{.code}}.svg"
+        phonePrefix : STRING
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
+
+    SPACE_TYPE | dropped
+
+        id : STRING | key, unique
+        number : FLOAT64
+        name : STRING
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
+
+    PROFILE | dropped
+
+        id : TUID | key, unique
+        userId : UUID | linked auth.users
+        firstName : STRING
+        lastName : STRING
+        email : STRING
+        phoneNumber : STRING
+        countryCode : COUNTRY.code
+        imagePath : STRING = "/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_profile_{{integer 1 20}}.jpg"
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
 
     PROPERTY | dropped, count 20
 
         id : TUID | key, unique
         number : FLOAT64
-        title : STRING = "{{latin 1 1 3 4}}"
-        description : STRING = "{{latin 3 6 9 12}}"
+        city : STRING
+        country : STRING
+        title : STRING = "{{latin 1 1 3 4}}¨fr:{{latin 1 1 3 4}}"
+        description : STRING = "{{latin 3 6 9 12}}¨fr:{{latin 3 6 9 12}}"
         price : FLOAT64
-        streetAddress1 : STRING
-        streetAddress2 : STRING
-        cityCode : STRING
-        cityName : STRING
-        countryCode : STRING
-        isFavorite : BOOL
+        imagePath : STRING = "/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_outside_{{integer 1 8}}.jpg"
+        imagePathArray : LIST[ STRING ] = "{/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg}"
+        propertyByNameMap : MAP[ STRING, STRING ]
+        userId : PROFILE.userId | private, linked auth.users
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated
+
+    SPACE | dropped, count 120
+
+        id : TUID | key, unique
+        propertyId : PROPERTY.id
+        typeId : SPACE_TYPE.id
+        name : STRING = "{{.typeId:fetch SPACE_TYPE id name}}"
+        description : STRING = "{{latin 1 1 3 4}}¨fr:{{latin 1 1 3 4}}"
+        floorNumber : INT64 = "{{integer 0 2}}"
+        area : FLOAT64 = "{{integer 20 100}}"
+        userId : PROFILE.userId | private, linked auth.users
+        creationTimestamp : TIMESTAMP | generated
+        updateTimestamp : TIMESTAMP | generated, updated

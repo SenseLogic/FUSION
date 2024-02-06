@@ -5,9 +5,9 @@ import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import fs from 'fs';
 import path from 'path';
-import { HomePageController } from './lib/controller/HomePageController';
-import { PropertiesPageController } from './lib/controller/PropertiesPageController';
-import { PropertyPageController } from './lib/controller/PropertyPageController';
+import { HomePageController } from './lib/controller/home_page_controller';
+import { PropertiesPageController } from './lib/controller/properties_page_controller';
+import { PropertyPageController } from './lib/controller/property_page_controller';
 
 // -- STATEMENTS
 

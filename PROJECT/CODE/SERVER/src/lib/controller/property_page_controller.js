@@ -1,6 +1,6 @@
 // -- IMPORTS
 
-import { propertyService } from '../service/PropertyService';
+import { propertyService } from '../service/property_service';
 
 // -- TYPES
 
