@@ -1,5 +1,6 @@
 // -- IMPORTS
 
+import dotenv from 'dotenv';
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
@@ -10,6 +11,8 @@ import { PropertiesPageController } from './lib/controller/properties_page_contr
 import { PropertyPageController } from './lib/controller/property_page_controller';
 
 // -- STATEMENTS
+
+dotenv.config();
 
 let fastify = Fastify( { logger: true } );
 
