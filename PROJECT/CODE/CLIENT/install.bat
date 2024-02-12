@@ -1,1 +1,1 @@
-yarn install
+call yarn install

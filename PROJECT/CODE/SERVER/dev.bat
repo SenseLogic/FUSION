@@ -1,1 +1,1 @@
-yarn run dev
+call yarn run dev
