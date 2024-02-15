@@ -15,7 +15,7 @@ export class HomePageController
     {
         return (
             {
-                favoritePropertyArray : await propertyService.getFavoritePropertyArray()
+                favoritePropertyArray : await propertyService.getPropertyArray()
             }
             );
     }

@@ -15,7 +15,7 @@
         {
             try
             {
-                let response = await axios.post( 'http://localhost:8000/page/home' );
+                let response = await axios.post( '/page/home' );
                 favoritePropertyArray = response.data.favoritePropertyArray;
             }
             catch ( error )
