@@ -73,7 +73,7 @@ let start =
     {
         try
         {
-            await fastify.listen( { port: 3000 } );
+            await fastify.listen( { port : 8000, host : '0.0.0.0' } );
         }
         catch ( error )
         {

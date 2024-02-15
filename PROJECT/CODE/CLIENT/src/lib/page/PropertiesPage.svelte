@@ -15,7 +15,7 @@
         {
             try
             {
-                let response = await axios.post( 'http://localhost:3000/page/properties' );
+                let response = await axios.post( 'http://localhost:8000/page/properties' );
                 propertyArray = response.data.propertyArray;
             }
             catch ( error )

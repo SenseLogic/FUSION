@@ -18,7 +18,7 @@
         {
             try
             {
-                let response = await axios.post( `http://localhost:3000/page/property/${ id }` );
+                let response = await axios.post( `http://localhost:8000/page/property/${ id }` );
                 property = response.data.property;
             }
             catch ( error )

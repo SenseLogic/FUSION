@@ -12,6 +12,6 @@ export let
 
 export const database
     = createClient(
-          process.env.PRIVATE_FUSION_PROJECT_DATABASE_URL,
-          process.env.PRIVATE_FUSION_PROJECT_DATABASE_KEY
+          process.env.FUSION_PROJECT_DATABASE_URL,
+          process.env.FUSION_PROJECT_DATABASE_KEY
           );

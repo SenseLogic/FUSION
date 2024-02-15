@@ -1,19 +1,29 @@
+FROM node:lts-alpine as builder
+
+WORKDIR /app
+COPY . .
+
+WORKDIR /app/SERVER
+RUN yarn install && yarn run build && rm -rf node_modules
+
+WORKDIR /app/CLIENT
+RUN yarn install && yarn run build && rm -rf node_modules
+
 FROM node:lts-alpine
-ENV PRIVATE_FUSION_PROJECT_DATABASE_HOST=db.xxx.supabase.co
-ENV PRIVATE_FUSION_PROJECT_DATABASE_PASSWORD=xxx
-ENV PRIVATE_FUSION_PROJECT_DATABASE_URL=https://xxx.supabase.co
-ENV PRIVATE_FUSION_PROJECT_DATABASE_KEY=xxx.xxx.xxx
-ENV PRIVATE_FUSION_PROJECT_STORAGE_URL=https://xxx.supabase.co/storage/v1/object/public
-WORKDIR /usr/src/app
-COPY SERVER/ ./SERVER/
-COPY CLIENT/ ./CLIENT/
-WORKDIR /usr/src/app/SERVER
-RUN yarn install
-RUN yarn run build
-WORKDIR /usr/src/app/CLIENT
-RUN yarn install
-RUN yarn run build
-RUN cp -r dist/ ../SERVER/dist/public/
-WORKDIR /usr/src/app/SERVER/dist
-EXPOSE 3000
+
+WORKDIR /app
+
+COPY --from=builder /app/SERVER/dist .
+COPY --from=builder /app/CLIENT/dist ./public
+
+ENV HOST 0.0.0.0
+ENV PORT 8000
+ENV FUSION_PROJECT_DATABASE_HOST=db.xxx.supabase.co
+ENV FUSION_PROJECT_DATABASE_PASSWORD=xxx
+ENV FUSION_PROJECT_DATABASE_URL=https://xxx.supabase.co
+ENV FUSION_PROJECT_DATABASE_KEY=xxx.xxx.xxx
+ENV FUSION_PROJECT_STORAGE_URL=https://xxx.supabase.co/storage/v1/object/public
+
+EXPOSE 8000
+
 CMD ["node", "index.js"]
