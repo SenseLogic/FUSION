@@ -9,6 +9,7 @@ import path from 'path';
 import { HomePageController } from './lib/controller/home_page_controller';
 import { PropertiesPageController } from './lib/controller/properties_page_controller';
 import { PropertyPageController } from './lib/controller/property_page_controller';
+import { supabaseService } from './lib/service/supabase_service';
 
 // -- STATEMENTS
 
@@ -71,6 +72,8 @@ fastify.setNotFoundHandler(
 let start =
     async () =>
     {
+        console.log( await supabaseService.getClient() );
+
         try
         {
             await fastify.listen( { port : 8000, host : '0.0.0.0' } );

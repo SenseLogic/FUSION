@@ -1,7 +1,7 @@
 // -- IMPORTS
 
 import { getMapById, logError } from 'senselogic-gist';
-import { database } from '../database';
+import { databaseService } from './database_service';
 
 // -- FUNCTIONS
 
@@ -21,8 +21,8 @@ class SpaceTypeService
     async getSpaceTypeArray(
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE_TYPE' )
                   .select();
 
@@ -40,8 +40,8 @@ class SpaceTypeService
         spaceTypeId
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE_TYPE' )
                   .select()
                   .eq( 'id', spaceTypeId );
@@ -104,8 +104,8 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE_TYPE' )
                   .insert( spaceType );
 
@@ -126,8 +126,8 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'SPACE_TYPE' )
                 .update( spaceType )
                 .eq( 'id', spaceTypeId );
@@ -148,8 +148,8 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'SPACE_TYPE' )
                 .delete()
                 .eq( 'id', spaceTypeId );
@@ -165,5 +165,5 @@ class SpaceTypeService
 
 // -- VARIABLES
 
-export const spaceTypeService
+export let spaceTypeService
     = new SpaceTypeService();

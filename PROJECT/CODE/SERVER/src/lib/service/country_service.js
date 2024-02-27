@@ -1,7 +1,7 @@
 // -- IMPORTS
 
 import { getMapByCode, logError } from 'senselogic-gist';
-import { database } from '../database';
+import { databaseService } from './database_service';
 
 // -- FUNCTIONS
 
@@ -21,8 +21,8 @@ class CountryService
     async getCountryArray(
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'COUNTRY' )
                   .select();
 
@@ -40,8 +40,8 @@ class CountryService
         countryCode
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'COUNTRY' )
                   .select()
                   .eq( 'code', countryCode );
@@ -104,8 +104,8 @@ class CountryService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'COUNTRY' )
                   .insert( country );
 
@@ -126,8 +126,8 @@ class CountryService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'COUNTRY' )
                 .update( country )
                 .eq( 'code', countryCode );
@@ -148,8 +148,8 @@ class CountryService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'COUNTRY' )
                 .delete()
                 .eq( 'code', countryCode );
@@ -165,5 +165,5 @@ class CountryService
 
 // -- VARIABLES
 
-export const countryService
+export let countryService
     = new CountryService();

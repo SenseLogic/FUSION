@@ -1,8 +1,8 @@
 // -- IMPORTS
 
 import { getMapById, logError } from 'senselogic-gist';
-import { database } from '../database';
-import { spaceService } from '../service/space_service';
+import { databaseService } from './database_service';
+import { spaceService } from './space_service';
 
 // -- FUNCTIONS
 
@@ -58,8 +58,8 @@ class PropertyService
         isInflated = false
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'PROPERTY' )
                   .select();
 
@@ -89,8 +89,8 @@ class PropertyService
         isInflated = false
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'PROPERTY' )
                   .select()
                   .eq( 'id', propertyId );
@@ -161,8 +161,8 @@ class PropertyService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'PROPERTY' )
                   .insert( property );
 
@@ -183,8 +183,8 @@ class PropertyService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'PROPERTY' )
                 .update( property )
                 .eq( 'id', propertyId );
@@ -205,8 +205,8 @@ class PropertyService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'PROPERTY' )
                 .delete()
                 .eq( 'id', propertyId );
@@ -222,5 +222,5 @@ class PropertyService
 
 // -- VARIABLES
 
-export const propertyService
+export let propertyService
     = new PropertyService();

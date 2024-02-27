@@ -1,7 +1,7 @@
 // -- IMPORTS
 
 import { getMapByCode, logError } from 'senselogic-gist';
-import { database } from '../database';
+import { databaseService } from './database_service';
 
 // -- FUNCTIONS
 
@@ -21,8 +21,8 @@ class LanguageService
     async getLanguageArray(
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'LANGUAGE' )
                   .select();
 
@@ -40,8 +40,8 @@ class LanguageService
         languageCode
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'LANGUAGE' )
                   .select()
                   .eq( 'code', languageCode );
@@ -104,8 +104,8 @@ class LanguageService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'LANGUAGE' )
                   .insert( language );
 
@@ -126,8 +126,8 @@ class LanguageService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'LANGUAGE' )
                 .update( language )
                 .eq( 'code', languageCode );
@@ -148,8 +148,8 @@ class LanguageService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'LANGUAGE' )
                 .delete()
                 .eq( 'code', languageCode );
@@ -165,5 +165,5 @@ class LanguageService
 
 // -- VARIABLES
 
-export const languageService
+export let languageService
     = new LanguageService();

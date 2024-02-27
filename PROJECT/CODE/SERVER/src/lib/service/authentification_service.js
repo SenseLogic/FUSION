@@ -1,11 +1,11 @@
 // -- IMPORTS
 
 import { logError } from 'senselogic-gist';
-import { database } from '../database';
+import { supabaseService } from './supabase_service';
 
 // -- TYPES
 
-class UserService
+class AuthentificationService
 {
     // -- OPERATIONS
 
@@ -14,8 +14,8 @@ class UserService
         password
         )
     {
-        const { user, error }
-            = await database.auth.signUp(
+        let { user, error }
+            = await supabaseService.getClient().auth.signUp(
                   {
                       email,
                       password
@@ -37,8 +37,8 @@ class UserService
         password
         )
     {
-        const { user, error }
-            = await database.auth.signIn(
+        let { user, error }
+            = await supabaseService.getClient().auth.signIn(
                   {
                       email,
                       password
@@ -58,8 +58,8 @@ class UserService
     async signOutUser(
         )
     {
-        const { error }
-            = await database.auth.signOut();
+        let { error }
+            = await supabaseService.getClient().auth.signOut();
 
         if ( error !== null )
         {
@@ -70,5 +70,5 @@ class UserService
 
 // -- VARIABLES
 
-export const userService
-    = new UserService();
+export let authentificationService
+    = new AuthentificationService();

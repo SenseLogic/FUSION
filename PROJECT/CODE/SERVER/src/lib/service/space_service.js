@@ -1,8 +1,8 @@
 // -- IMPORTS
 
 import { getMapById, logError } from 'senselogic-gist';
-import { database } from '../database';
-import { spaceTypeService } from '../service/space_type_service';
+import { databaseService } from './database_service';
+import { spaceTypeService } from './space_type_service';
 
 // -- FUNCTIONS
 
@@ -35,8 +35,8 @@ class SpaceService
     async getSpaceArray(
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE' )
                   .select();
 
@@ -54,8 +54,8 @@ class SpaceService
         spaceId
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE' )
                   .select()
                   .eq( 'id', spaceId );
@@ -82,8 +82,8 @@ class SpaceService
         isInflated = false
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE' )
                   .select()
                   .eq( 'propertyId', propertyId );
@@ -113,8 +113,8 @@ class SpaceService
         propertyIdArray
         )
     {
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE' )
                   .select()
                   .in( 'propertyId', propertyIdArray );
@@ -169,8 +169,8 @@ class SpaceService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                   .from( 'SPACE' )
                   .insert( space );
 
@@ -191,8 +191,8 @@ class SpaceService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'SPACE' )
                 .update( space )
                 .eq( 'id', spaceId );
@@ -213,8 +213,8 @@ class SpaceService
     {
         this.clearCache();
 
-        const { data, error }
-            = await database
+        let { data, error }
+            = await databaseService.getClient()
                 .from( 'SPACE' )
                 .delete()
                 .eq( 'id', spaceId );
@@ -230,5 +230,5 @@ class SpaceService
 
 // -- VARIABLES
 
-export const spaceService
+export let spaceService
     = new SpaceService();
