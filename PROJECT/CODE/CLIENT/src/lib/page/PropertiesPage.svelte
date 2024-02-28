@@ -2,6 +2,7 @@
     // -- IMPORTS
 
     import axios from 'axios';
+    import { getLocalizedText } from 'senselogic-gist';
     import { onMount } from 'svelte';
     import { Link } from 'svelte-routing';
 
@@ -48,7 +49,7 @@
         { #each propertyArray as property }
             <Link to={ `/property/${property.id}` }>
                 <div class="property">
-                    <p>{ property.title }</p>
+                    <p>{ getLocalizedText( property.title ) }</p>
                 </div>
             </Link>
         { /each}

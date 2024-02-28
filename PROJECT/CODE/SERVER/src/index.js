@@ -72,7 +72,7 @@ fastify.setNotFoundHandler(
 let start =
     async () =>
     {
-        console.log( await supabaseService.getClient() );
+        await supabaseService.getClient();
 
         try
         {

@@ -2,6 +2,7 @@
     // -- IMPORTS
 
     import { onMount } from 'svelte';
+    import { getLocalizedText } from 'senselogic-gist';
     import axios from 'axios';
 
     // -- EXPORTS
@@ -43,7 +44,7 @@
     <div class="hourglass">Loading...</div>
 { :else }
     <div>
-        <h1>{ property.title }</h1>
-        <p>{ property.description }</p>
+        <h1>{ getLocalizedText( property.title ) }</h1>
+        <p>{ getLocalizedText( property.description ) }</p>
     </div>
 { /if }
