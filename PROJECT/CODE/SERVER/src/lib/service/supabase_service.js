@@ -19,7 +19,7 @@ class SupabaseService
 
     getClient(
         request,
-        response
+        reply
         )
     {
         if ( this.client === null )
@@ -41,9 +41,9 @@ class SupabaseService
                                 set:
                                     ( key, value, options ) =>
                                     {
-                                        if ( response )
+                                        if ( reply )
                                         {
-                                            response.cookie(
+                                            reply.cookie(
                                                 key,
                                                 encodeURIComponent( value ),
                                                 {
@@ -57,9 +57,9 @@ class SupabaseService
                                 remove:
                                     ( key, options ) =>
                                     {
-                                        if ( response )
+                                        if ( reply )
                                         {
-                                            response.cookie(
+                                            reply.cookie(
                                                 key,
                                                 '',
                                                 {
@@ -71,7 +71,7 @@ class SupabaseService
                                     }
                             }
                         }
-                        )( request, reply );
+                        );
             }
             else
             {

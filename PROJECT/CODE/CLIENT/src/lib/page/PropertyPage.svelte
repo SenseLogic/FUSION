@@ -19,7 +19,7 @@
         {
             try
             {
-                let response = await axios.post( `/page/property/${ id }` );
+                let response = await axios.post( `/api/page/property/${ id }` );
                 property = response.data.property;
             }
             catch ( error )

@@ -37,7 +37,7 @@ let propertiesPageController = new PropertiesPageController();
 let propertyPageController = new PropertyPageController();
 
 fastify.post(
-    '/page/home',
+    '/api/page/home',
     async ( request, reply ) =>
     {
         return await homePageController.processRequest( request, reply );
@@ -45,7 +45,7 @@ fastify.post(
     );
 
 fastify.post(
-    '/page/properties',
+    '/api/page/properties',
     async ( request, reply ) =>
     {
         return await propertiesPageController.processRequest( request, reply );
@@ -53,7 +53,7 @@ fastify.post(
     );
 
 fastify.post(
-    '/page/property/:id',
+    '/api/page/property/:id',
     async ( request, reply ) =>
     {
         return await propertyPageController.processRequest( request, reply );
