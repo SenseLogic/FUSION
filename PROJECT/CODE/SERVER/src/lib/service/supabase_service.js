@@ -17,70 +17,76 @@ class SupabaseService
 
     // -- OPERATIONS
 
-    getClient(
+    getServerClient(
         request,
         reply
         )
     {
         if ( this.client === null )
         {
-            if ( request !== undefined )
-            {
-                this.client =
-                    createServerClient(
-                        process.env.FUSION_PROJECT_DATABASE_URL,
-                        process.env.FUSION_PROJECT_DATABASE_KEY,
+            this.client =
+                createServerClient(
+                    process.env.FUSION_PROJECT_DATABASE_URL,
+                    process.env.FUSION_PROJECT_DATABASE_KEY,
+                    {
+                        cookies:
                         {
-                            cookies:
-                            {
-                                get:
-                                    ( key ) =>
+                            get:
+                                ( key ) =>
+                                {
+                                    return decodeURIComponent( request.cookies[ key ] ?? '' )
+                                },
+                            set:
+                                ( key, value, options ) =>
+                                {
+                                    if ( reply )
                                     {
-                                        return decodeURIComponent( request.cookies[ key ] ?? '' )
-                                    },
-                                set:
-                                    ( key, value, options ) =>
-                                    {
-                                        if ( reply )
-                                        {
-                                            reply.cookie(
-                                                key,
-                                                encodeURIComponent( value ),
-                                                {
-                                                    ...options,
-                                                    sameSite: 'Lax',
-                                                    httpOnly: true
-                                                }
-                                                );
-                                        }
-                                    },
-                                remove:
-                                    ( key, options ) =>
-                                    {
-                                        if ( reply )
-                                        {
-                                            reply.cookie(
-                                                key,
-                                                '',
-                                                {
-                                                    ...options,
-                                                    httpOnly: true
-                                                }
-                                                );
-                                        }
+                                        reply.cookie(
+                                            key,
+                                            encodeURIComponent( value ),
+                                            {
+                                                ...options,
+                                                sameSite: 'Lax',
+                                                httpOnly: true
+                                            }
+                                            );
                                     }
-                            }
+                                },
+                            remove:
+                                ( key, options ) =>
+                                {
+                                    if ( reply )
+                                    {
+                                        reply.cookie(
+                                            key,
+                                            '',
+                                            {
+                                                ...options,
+                                                httpOnly: true
+                                            }
+                                            );
+                                    }
+                                }
                         }
-                        );
-            }
-            else
-            {
-                this.client =
-                    createClient(
-                        process.env.FUSION_PROJECT_DATABASE_URL,
-                        process.env.FUSION_PROJECT_DATABASE_KEY
-                        );
-            }
+                    }
+                    );
+        }
+
+        return this.client;
+    }
+
+    // ~~
+
+    getClient(
+        )
+    {
+        if ( this.client === null )
+        {
+            this.client =
+                createClient(
+                    process.env.FUSION_PROJECT_DATABASE_URL,
+                    process.env.FUSION_PROJECT_DATABASE_KEY
+                    );
         }
 
         return this.client;

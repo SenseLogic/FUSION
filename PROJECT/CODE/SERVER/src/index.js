@@ -11,6 +11,16 @@ import { PropertiesPageController } from './lib/controller/properties_page_contr
 import { PropertyPageController } from './lib/controller/property_page_controller';
 import { supabaseService } from './lib/service/supabase_service';
 
+// -- FUNCTIONS
+
+function hasServerClient(
+    request,
+    reply
+    )
+{
+    return supabaseService.getServerClient( request, reply ) !== null;
+}
+
 // -- STATEMENTS
 
 dotenv.config();
@@ -40,7 +50,10 @@ fastify.post(
     '/api/page/home',
     async ( request, reply ) =>
     {
-        return await homePageController.processRequest( request, reply );
+        return (
+            hasServerClient( request, reply )
+            && await homePageController.processRequest( request, reply )
+            );
     }
     );
 
@@ -48,7 +61,10 @@ fastify.post(
     '/api/page/properties',
     async ( request, reply ) =>
     {
-        return await propertiesPageController.processRequest( request, reply );
+        return (
+            hasServerClient( request, reply )
+            && await propertiesPageController.processRequest( request, reply )
+            );
     }
     );
 
@@ -56,7 +72,10 @@ fastify.post(
     '/api/page/property/:id',
     async ( request, reply ) =>
     {
-        return await propertyPageController.processRequest( request, reply );
+        return (
+            hasServerClient( request, reply )
+            && await propertyPageController.processRequest( request, reply )
+            );
     }
     );
 
@@ -65,6 +84,7 @@ fastify.setNotFoundHandler(
     {
         let htmlFilePath = path.join( __dirname, 'public', 'index.html' );
         let htmlFileContent = fs.readFileSync( htmlFilePath, 'utf8' );
+
         reply.type( 'text/html' ).send( htmlFileContent );
     }
     );
