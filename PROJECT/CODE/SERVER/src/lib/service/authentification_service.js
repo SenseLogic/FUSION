@@ -7,6 +7,14 @@ import { supabaseService } from './supabase_service';
 
 class AuthentificationService
 {
+    // -- INQUIRIES
+
+    getClient(
+        )
+    {
+        return supabaseService.getClient();
+    }
+
     // -- OPERATIONS
 
     async signUpUser(

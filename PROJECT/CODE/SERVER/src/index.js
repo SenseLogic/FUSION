@@ -13,12 +13,32 @@ import { supabaseService } from './lib/service/supabase_service';
 
 // -- FUNCTIONS
 
-function hasServerClient(
+function hasClient(
     request,
     reply
     )
 {
-    return supabaseService.getServerClient( request, reply ) !== null;
+    return supabaseService.getClient( request, reply ) !== null;
+}
+
+// ~~
+
+function checkPageApiRequest(
+    request,
+    reply
+    )
+{
+    return hasClient( request, reply );
+}
+
+// ~~
+
+function getApiError(
+    request,
+    reply
+    )
+{
+    return {};
 }
 
 // -- STATEMENTS
@@ -50,10 +70,14 @@ fastify.post(
     '/api/page/home',
     async ( request, reply ) =>
     {
-        return (
-            hasServerClient( request, reply )
-            && await homePageController.processRequest( request, reply )
-            );
+        if ( checkPageApiRequest( request, reply ) )
+        {
+            return await homePageController.processRequest( request, reply );
+        }
+        else
+        {
+            return getApiError( request, reply );
+        }
     }
     );
 
@@ -61,10 +85,14 @@ fastify.post(
     '/api/page/properties',
     async ( request, reply ) =>
     {
-        return (
-            hasServerClient( request, reply )
-            && await propertiesPageController.processRequest( request, reply )
-            );
+        if ( checkPageApiRequest( request, reply ) )
+        {
+            return await propertiesPageController.processRequest( request, reply );
+        }
+        else
+        {
+            return getApiError( request, reply );
+        }
     }
     );
 
@@ -72,10 +100,14 @@ fastify.post(
     '/api/page/property/:id',
     async ( request, reply ) =>
     {
-        return (
-            hasServerClient( request, reply )
-            && await propertyPageController.processRequest( request, reply )
-            );
+        if ( checkPageApiRequest( request, reply ) )
+        {
+            return await propertyPageController.processRequest( request, reply );
+        }
+        else
+        {
+            return getApiError( request, reply );
+        }
     }
     );
 
@@ -92,8 +124,6 @@ fastify.setNotFoundHandler(
 let start =
     async () =>
     {
-        await supabaseService.getClient();
-
         try
         {
             await fastify.listen( { port : 8000, host : '0.0.0.0' } );

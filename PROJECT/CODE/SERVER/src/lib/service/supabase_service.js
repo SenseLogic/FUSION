@@ -1,7 +1,6 @@
 // -- IMPORTS
 
 import { createServerClient } from '@supabase/ssr';
-import { createClient } from '@supabase/supabase-js';
 
 // -- STATEMENTS
 
@@ -17,7 +16,7 @@ class SupabaseService
 
     // -- OPERATIONS
 
-    getServerClient(
+    getClient(
         request,
         reply
         )
@@ -69,23 +68,6 @@ class SupabaseService
                                 }
                         }
                     }
-                    );
-        }
-
-        return this.client;
-    }
-
-    // ~~
-
-    getClient(
-        )
-    {
-        if ( this.client === null )
-        {
-            this.client =
-                createClient(
-                    process.env.FUSION_PROJECT_DATABASE_URL,
-                    process.env.FUSION_PROJECT_DATABASE_KEY
                     );
         }
 

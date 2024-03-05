@@ -11,7 +11,7 @@ export let
 
 class DatabaseService
 {
-    // -- OPERATIONS
+    // -- INQUIRIES
 
     getClient(
         )
