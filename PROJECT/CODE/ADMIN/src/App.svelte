@@ -10,19 +10,19 @@
 </script>
 
 <Router { url }>
-    <img class="logo" src="logo.png" alt="logo">
+    <img class="logo" src="/admin/logo.png" alt="logo">
     <nav>
-        <Link to="/">Home</Link>
-        <Link to="/properties">Properties</Link>
+        <Link to="/admin">Home</Link>
+        <Link to="/admin/properties">Properties</Link>
     </nav>
     <div>
-        <Route path="/">
+        <Route path="/admin">
             <HomePage/>
         </Route>
-        <Route path="/properties">
+        <Route path="/admin/properties">
             <PropertiesPage/>
         </Route>
-        <Route path="/property/:id" let:params>
+        <Route path="/admin/property/:id" let:params>
             <PropertyPage id="{ params.id }"/>
         </Route>
     </div>

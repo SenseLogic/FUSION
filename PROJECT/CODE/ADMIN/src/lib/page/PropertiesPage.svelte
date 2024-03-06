@@ -8,7 +8,7 @@
 
     // -- STATEMENTS
 
-    let favoritePropertyArray = [];
+    let propertyArray = [];
     let isLoading = true;
 
     onMount(
@@ -16,8 +16,8 @@
         {
             try
             {
-                let response = await axios.post( '/api/page/home' );
-                favoritePropertyArray = response.data.favoritePropertyArray;
+                let response = await axios.post( '/api/page/properties' );
+                propertyArray = response.data.propertyArray;
             }
             catch ( error )
             {
@@ -45,14 +45,13 @@
     <div class="hourglass">Loading...</div>
 { :else }
     <div>
-        <h1>Favorite Properties</h1>
-        { #each favoritePropertyArray as property }
-            <Link to={ '/property/' + property.id }>
+        <h1>Properties</h1>
+        { #each propertyArray as property }
+            <Link to={ '/admin/property/' + property.id }>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
             </Link>
         { /each}
-        <Link to="/properties">See more</Link>
     </div>
 { /if }

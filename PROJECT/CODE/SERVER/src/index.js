@@ -28,7 +28,16 @@ fastify.register(
     fastifyStatic,
     {
         root : path.join( __dirname, 'public' ),
-        prefix : '/'
+        prefix : '/',
+        decorateReply: false
+    }
+    );
+
+fastify.register(
+    fastifyStatic,
+    {
+        root : path.join( __dirname, 'public/admin' ),
+        prefix : '/admin/'
     }
     );
 
@@ -63,9 +72,21 @@ fastify.post(
 fastify.setNotFoundHandler(
     async ( request, reply ) =>
     {
-        let htmlFilePath = path.join( __dirname, 'public', 'index.html' );
-        let htmlFileContent = fs.readFileSync( htmlFilePath, 'utf8' );
+        let htmlFileName;
 
+        if ( request.url === '/admin'
+             || request.url.startsWith( '/admin/' ) )
+        {
+            htmlFileName = 'public/admin/index.html';
+        }
+        else
+        {
+            htmlFileName = 'public/index.html';
+        }
+
+        let htmlFilePath = path.join( __dirname, htmlFileName );
+        let htmlFileContent = fs.readFileSync( htmlFilePath, 'utf8' );
+console.log( htmlFilePath );
         reply.type( 'text/html' ).send( htmlFileContent );
     }
     );

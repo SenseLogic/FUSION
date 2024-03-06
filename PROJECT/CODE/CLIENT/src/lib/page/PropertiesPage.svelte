@@ -47,7 +47,7 @@
     <div>
         <h1>Properties</h1>
         { #each propertyArray as property }
-            <Link to={ `/property/${property.id}` }>
+            <Link to={ '/property/' + property.id }>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>

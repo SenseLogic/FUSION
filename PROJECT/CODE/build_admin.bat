@@ -1,5 +1,5 @@
 echo on
-cd SERVER
+cd ADMIN
 call build.bat
 cd ..
 pause

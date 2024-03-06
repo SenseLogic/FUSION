@@ -47,7 +47,7 @@
     <div>
         <h1>Favorite Properties</h1>
         { #each favoritePropertyArray as property }
-            <Link to={ '/property/' + property.id }>
+            <Link to={ '/admin/property/' + property.id }>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
