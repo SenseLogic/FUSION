@@ -13,22 +13,12 @@ import { supabaseService } from './lib/service/supabase_service';
 
 // -- FUNCTIONS
 
-function hasClient(
-    request,
-    reply
-    )
-{
-    return supabaseService.getClient( request, reply ) !== null;
-}
-
-// ~~
-
 function checkPageApiRequest(
     request,
     reply
     )
 {
-    return hasClient( request, reply );
+    return true;
 }
 
 // ~~
@@ -124,6 +114,8 @@ fastify.setNotFoundHandler(
 let start =
     async () =>
     {
+        supabaseService.getClient();
+
         try
         {
             await fastify.listen( { port : 8000, host : '0.0.0.0' } );

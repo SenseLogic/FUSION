@@ -33,7 +33,15 @@ class SupabaseService
                             get:
                                 ( key ) =>
                                 {
-                                    return decodeURIComponent( request.cookies[ key ] ?? '' )
+                                    if ( request
+                                         && request.cookies )
+                                    {
+                                        return decodeURIComponent( request.cookies[ key ] ?? '' )
+                                    }
+                                    else
+                                    {
+                                        return '';
+                                    }
                                 },
                             set:
                                 ( key, value, options ) =>
