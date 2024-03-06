@@ -1,10 +1,11 @@
 // -- IMPORTS
 
 import { propertyService } from '../service/property_service';
+import { PageController } from './page_controller';
 
 // -- TYPES
 
-export class PropertiesPageController
+export class PropertiesPageController extends PageController
 {
     // -- OPERATIONS
 

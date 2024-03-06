@@ -84,6 +84,37 @@ class PropertyService
 
     // ~~
 
+    async getFavoritePropertyArray(
+        isInflated = false
+        )
+    {
+        let { data, error }
+            = await databaseService.getClient()
+                  .from( 'PROPERTY' )
+                  .select()
+                  .eq( 'isFavorite', true );
+
+        if ( error !== null )
+        {
+            logError( error );
+        }
+
+        if ( data !== null )
+        {
+            if ( isInflated )
+            {
+                this.inflatePropertyArray(
+                    data,
+                    await spaceService.getSpaceArray()
+                    );
+            }
+        }
+
+        return data;
+    }
+
+    // ~~
+
     async getPropertyById(
         propertyId,
         isInflated = false

@@ -57,6 +57,7 @@ public
         title : STRING = "{{latin 1 1 3 4}}¨fr:{{latin 1 1 3 4}}"
         description : STRING = "{{latin 3 6 9 12}}¨fr:{{latin 3 6 9 12}}"
         price : FLOAT64
+        isFavorite : BOOL
         imagePath : STRING = "/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_outside_{{integer 1 8}}.jpg"
         imagePathArray : LIST[ STRING ] = "{/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg~/upload/user/xRg9iRSJEqKAO7tnbXJa1w/20230924081935139_inside_{{integer 1 16}}.jpg}"
         propertyByNameMap : MAP[ STRING, STRING ]

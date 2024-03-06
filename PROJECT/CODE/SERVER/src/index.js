@@ -11,26 +11,6 @@ import { PropertiesPageController } from './lib/controller/properties_page_contr
 import { PropertyPageController } from './lib/controller/property_page_controller';
 import { supabaseService } from './lib/service/supabase_service';
 
-// -- FUNCTIONS
-
-function checkPageApiRequest(
-    request,
-    reply
-    )
-{
-    return true;
-}
-
-// ~~
-
-function getApiError(
-    request,
-    reply
-    )
-{
-    return {};
-}
-
 // -- STATEMENTS
 
 dotenv.config();
@@ -60,14 +40,7 @@ fastify.post(
     '/api/page/home',
     async ( request, reply ) =>
     {
-        if ( checkPageApiRequest( request, reply ) )
-        {
-            return await homePageController.processRequest( request, reply );
-        }
-        else
-        {
-            return getApiError( request, reply );
-        }
+        return await homePageController.processRequest( request, reply );
     }
     );
 
@@ -75,14 +48,7 @@ fastify.post(
     '/api/page/properties',
     async ( request, reply ) =>
     {
-        if ( checkPageApiRequest( request, reply ) )
-        {
-            return await propertiesPageController.processRequest( request, reply );
-        }
-        else
-        {
-            return getApiError( request, reply );
-        }
+        return await propertiesPageController.processRequest( request, reply );
     }
     );
 
@@ -90,14 +56,7 @@ fastify.post(
     '/api/page/property/:id',
     async ( request, reply ) =>
     {
-        if ( checkPageApiRequest( request, reply ) )
-        {
-            return await propertyPageController.processRequest( request, reply );
-        }
-        else
-        {
-            return getApiError( request, reply );
-        }
+        return await propertyPageController.processRequest( request, reply );
     }
     );
 
