@@ -1,7 +1,7 @@
 // -- IMPORTS
 
-import './app.css'
-import App from './App.svelte'
+import './app.styl';
+import App from './App.svelte';
 
 // -- STATEMENTS
 
