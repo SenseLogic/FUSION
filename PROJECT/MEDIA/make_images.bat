@@ -1,2 +1,3 @@
-powershell -NoProfile -ExecutionPolicy Bypass -File "%TOOL%\NANO\nano.ps1" image ..\CODE\CLIENT\public\image 90,80,70,60 "%TOOL%\IMAGE_MAGICK\convert" keep
+rem "%TOOL%/NANO/nano" --convert-tool-path "%TOOL%/IMAGE_MAGICK/convert" --keep --recursive image/ ../CODE/CLIENT/public/image/
+"H:/PROJECT/TOOL/NANO/nano" --convert-tool-path "%TOOL%/IMAGE_MAGICK/convert" --keep --recursive image/ ../CODE/CLIENT/public/image/
 pause
