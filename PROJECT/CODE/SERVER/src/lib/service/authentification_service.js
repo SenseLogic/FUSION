@@ -22,8 +22,8 @@ class AuthentificationService
         password
         )
     {
-        let { user, error }
-            = await supabaseService.getClient().auth.signUp(
+        let { user, error } =
+            await supabaseService.getClient().auth.signUp(
                   {
                       email,
                       password
@@ -45,8 +45,8 @@ class AuthentificationService
         password
         )
     {
-        let { user, error }
-            = await supabaseService.getClient().auth.signIn(
+        let { user, error } =
+            await supabaseService.getClient().auth.signIn(
                   {
                       email,
                       password
@@ -66,8 +66,8 @@ class AuthentificationService
     async signOutUser(
         )
     {
-        let { error }
-            = await supabaseService.getClient().auth.signOut();
+        let { error } =
+            await supabaseService.getClient().auth.signOut();
 
         if ( error !== null )
         {

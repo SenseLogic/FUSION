@@ -14,7 +14,10 @@ class PropertyService
         )
     {
         this.cachedPropertyArray = null;
+        this.cachedPropertyArrayTimestamp = 0;
+
         this.cachedPropertyByIdMap = null;
+        this.cachedPropertyByIdMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -58,10 +61,10 @@ class PropertyService
         isInflated = false
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'PROPERTY' )
-                  .select();
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'PROPERTY' )
+                .select();
 
         if ( error !== null )
         {
@@ -88,11 +91,11 @@ class PropertyService
         isInflated = false
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'PROPERTY' )
-                  .select()
-                  .eq( 'isFavorite', true );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'PROPERTY' )
+                .select()
+                .eq( 'isFavorite', true );
 
         if ( error !== null )
         {
@@ -120,11 +123,11 @@ class PropertyService
         isInflated = false
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'PROPERTY' )
-                  .select()
-                  .eq( 'id', propertyId );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'PROPERTY' )
+                .select()
+                .eq( 'id', propertyId );
 
         if ( error !== null )
         {
@@ -163,9 +166,11 @@ class PropertyService
     async getCachedPropertyArray(
         )
     {
-        if ( this.cachedPropertyArray === null )
+        if ( this.cachedPropertyArray === null 
+             || Date.now() > this.cachedPropertyArrayTimestamp + 300000 )
         {
             this.cachedPropertyArray = await this.getPropertyArray();
+            this.cachedPropertyArrayTimestamp = Date.now();
         }
 
         return this.cachedPropertyArray;
@@ -176,9 +181,11 @@ class PropertyService
     async getCachedPropertyByIdMap(
         )
     {
-        if ( this.cachedPropertyByIdMap === null )
+        if ( this.cachedPropertyByIdMap === null 
+             || Date.now() > this.cachedPropertyByIdMapTimestamp + 300000 )
         {
             this.cachedPropertyByIdMap = getMapById( await this.getCachedPropertyArray() );
+            this.cachedPropertyByIdMapTimestamp = Date.now();
         }
 
         return this.cachedPropertyByIdMap;
@@ -192,10 +199,10 @@ class PropertyService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'PROPERTY' )
-                  .insert( property );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'PROPERTY' )
+                .insert( property );
 
         if ( error !== null )
         {
@@ -214,8 +221,8 @@ class PropertyService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'PROPERTY' )
                 .update( property )
                 .eq( 'id', propertyId );
@@ -236,8 +243,8 @@ class PropertyService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'PROPERTY' )
                 .delete()
                 .eq( 'id', propertyId );

@@ -13,7 +13,10 @@ class LanguageService
         )
     {
         this.cachedLanguageArray = null;
+        this.cachedLanguageArrayTimestamp = 0;
+
         this.cachedLanguageByCodeMap = null;
+        this.cachedLanguageByCodeMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -21,10 +24,10 @@ class LanguageService
     async getLanguageArray(
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'LANGUAGE' )
-                  .select();
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'LANGUAGE' )
+                .select();
 
         if ( error !== null )
         {
@@ -40,11 +43,11 @@ class LanguageService
         languageCode
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'LANGUAGE' )
-                  .select()
-                  .eq( 'code', languageCode );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'LANGUAGE' )
+                .select()
+                .eq( 'code', languageCode );
 
         if ( error !== null )
         {
@@ -75,22 +78,26 @@ class LanguageService
     async getCachedLanguageArray(
         )
     {
-        if ( this.cachedLanguageArray === null )
+        if ( this.cachedLanguageArray === null 
+             || Date.now() > this.cachedLanguageArrayTimestamp + 300000 )
         {
             this.cachedLanguageArray = await this.getLanguageArray();
+            this.cachedLanguageArrayTimestamp = Date.now();
         }
 
         return this.cachedLanguageArray;
     }
-
+    
     // ~~
 
     async getCachedLanguageByCodeMap(
         )
     {
-        if ( this.cachedLanguageByCodeMap === null )
+        if ( this.cachedLanguageByCodeMap === null 
+             || Date.now() > this.cachedLanguageByCodeMapTimestamp + 300000 )
         {
             this.cachedLanguageByCodeMap = getMapByCode( await this.getCachedLanguageArray() );
+            this.cachedLanguageByCodeMapTimestamp = Date.now();
         }
 
         return this.cachedLanguageByCodeMap;
@@ -104,10 +111,10 @@ class LanguageService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'LANGUAGE' )
-                  .insert( language );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'LANGUAGE' )
+                .insert( language );
 
         if ( error !== null )
         {
@@ -126,8 +133,8 @@ class LanguageService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'LANGUAGE' )
                 .update( language )
                 .eq( 'code', languageCode );
@@ -148,8 +155,8 @@ class LanguageService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'LANGUAGE' )
                 .delete()
                 .eq( 'code', languageCode );

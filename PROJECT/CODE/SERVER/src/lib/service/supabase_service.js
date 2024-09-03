@@ -26,57 +26,57 @@ class SupabaseService
             this.client =
                 createServerClient(
                     process.env.FUSION_PROJECT_DATABASE_URL,
-                    process.env.FUSION_PROJECT_DATABASE_KEY,
-                    {
-                        cookies:
+                        process.env.FUSION_PROJECT_DATABASE_KEY,
                         {
-                            get:
-                                ( key ) =>
-                                {
-                                    if ( request
-                                         && request.cookies )
+                            cookies:
+                            {
+                                get:
+                                    ( key ) =>
                                     {
-                                        return decodeURIComponent( request.cookies[ key ] ?? '' )
-                                    }
-                                    else
+                                        if ( request
+                                             && request.cookies )
+                                        {
+                                            return decodeURIComponent( request.cookies[ key ] ?? '' )
+                                        }
+                                        else
+                                        {
+                                            return '';
+                                        }
+                                    },
+                                set:
+                                    ( key, value, options ) =>
                                     {
-                                        return '';
-                                    }
-                                },
-                            set:
-                                ( key, value, options ) =>
-                                {
-                                    if ( reply )
+                                        if ( reply )
+                                        {
+                                            reply.cookie(
+                                                key,
+                                                encodeURIComponent( value ),
+                                                {
+                                                    ...options,
+                                                    sameSite: 'Lax',
+                                                    httpOnly: true
+                                                }
+                                                );
+                                        }
+                                    },
+                                remove:
+                                    ( key, options ) =>
                                     {
-                                        reply.cookie(
-                                            key,
-                                            encodeURIComponent( value ),
-                                            {
-                                                ...options,
-                                                sameSite: 'Lax',
-                                                httpOnly: true
-                                            }
-                                            );
+                                        if ( reply )
+                                        {
+                                            reply.cookie(
+                                                key,
+                                                '',
+                                                {
+                                                    ...options,
+                                                    httpOnly: true
+                                                }
+                                                );
+                                        }
                                     }
-                                },
-                            remove:
-                                ( key, options ) =>
-                                {
-                                    if ( reply )
-                                    {
-                                        reply.cookie(
-                                            key,
-                                            '',
-                                            {
-                                                ...options,
-                                                httpOnly: true
-                                            }
-                                            );
-                                    }
-                                }
+                            }
                         }
-                    }
-                    );
+                        );
         }
 
         return this.client;

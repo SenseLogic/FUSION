@@ -13,7 +13,10 @@ class SpaceTypeService
         )
     {
         this.cachedSpaceTypeArray = null;
+        this.cachedSpaceTypeArrayTimestamp = 0;
+
         this.cachedSpaceTypeByIdMap = null;
+        this.cachedSpaceTypeByIdMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -21,10 +24,10 @@ class SpaceTypeService
     async getSpaceTypeArray(
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE_TYPE' )
-                  .select();
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE_TYPE' )
+                .select();
 
         if ( error !== null )
         {
@@ -40,11 +43,11 @@ class SpaceTypeService
         spaceTypeId
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE_TYPE' )
-                  .select()
-                  .eq( 'id', spaceTypeId );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE_TYPE' )
+                .select()
+                .eq( 'id', spaceTypeId );
 
         if ( error !== null )
         {
@@ -75,9 +78,11 @@ class SpaceTypeService
     async getCachedSpaceTypeArray(
         )
     {
-        if ( this.cachedSpaceTypeArray === null )
+        if ( this.cachedSpaceTypeArray === null 
+             || Date.now() > this.cachedSpaceTypeArrayTimestamp + 300000 )
         {
             this.cachedSpaceTypeArray = await this.getSpaceTypeArray();
+            this.cachedSpaceTypeArrayTimestamp = Date.now();
         }
 
         return this.cachedSpaceTypeArray;
@@ -88,9 +93,11 @@ class SpaceTypeService
     async getCachedSpaceTypeByIdMap(
         )
     {
-        if ( this.cachedSpaceTypeByIdMap === null )
+        if ( this.cachedSpaceTypeByIdMap === null 
+             || Date.now() > this.cachedSpaceTypeByIdMapTimestamp + 300000 )
         {
             this.cachedSpaceTypeByIdMap = getMapById( await this.getCachedSpaceTypeArray() );
+            this.cachedSpaceTypeByIdMapTimestamp = Date.now();
         }
 
         return this.cachedSpaceTypeByIdMap;
@@ -104,10 +111,10 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE_TYPE' )
-                  .insert( spaceType );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE_TYPE' )
+                .insert( spaceType );
 
         if ( error !== null )
         {
@@ -126,8 +133,8 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'SPACE_TYPE' )
                 .update( spaceType )
                 .eq( 'id', spaceTypeId );
@@ -148,8 +155,8 @@ class SpaceTypeService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'SPACE_TYPE' )
                 .delete()
                 .eq( 'id', spaceTypeId );

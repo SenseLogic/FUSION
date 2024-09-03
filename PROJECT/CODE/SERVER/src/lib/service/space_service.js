@@ -14,7 +14,10 @@ class SpaceService
         )
     {
         this.cachedSpaceArray = null;
+        this.cachedSpaceArrayTimestamp = 0;
+
         this.cachedSpaceByIdMap = null;
+        this.cachedSpaceByIdMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -35,10 +38,10 @@ class SpaceService
     async getSpaceArray(
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE' )
-                  .select();
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE' )
+                .select();
 
         if ( error !== null )
         {
@@ -54,11 +57,11 @@ class SpaceService
         spaceId
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE' )
-                  .select()
-                  .eq( 'id', spaceId );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE' )
+                .select()
+                .eq( 'id', spaceId );
 
         if ( error !== null )
         {
@@ -82,11 +85,11 @@ class SpaceService
         isInflated = false
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE' )
-                  .select()
-                  .eq( 'propertyId', propertyId );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE' )
+                .select()
+                .eq( 'propertyId', propertyId );
 
         if ( error !== null )
         {
@@ -113,11 +116,11 @@ class SpaceService
         propertyIdArray
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE' )
-                  .select()
-                  .in( 'propertyId', propertyIdArray );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE' )
+                .select()
+                .in( 'propertyId', propertyIdArray );
 
         if ( error !== null )
         {
@@ -140,9 +143,11 @@ class SpaceService
     async getCachedSpaceArray(
         )
     {
-        if ( this.cachedSpaceArray === null )
+        if ( this.cachedSpaceArray === null 
+             || Date.now() > this.cachedSpaceArrayTimestamp + 300000 )
         {
             this.cachedSpaceArray = await this.getSpaceArray();
+            this.cachedSpaceArrayTimestamp = Date.now();
         }
 
         return this.cachedSpaceArray;
@@ -153,9 +158,11 @@ class SpaceService
     async getCachedSpaceByIdMap(
         )
     {
-        if ( this.cachedSpaceByIdMap === null )
+        if ( this.cachedSpaceByIdMap === null 
+             || Date.now() > this.cachedSpaceByIdMapTimestamp + 300000 )
         {
             this.cachedSpaceByIdMap = getMapById( await this.getCachedSpaceArray() );
+            this.cachedSpaceByIdMapTimestamp = Date.now();
         }
 
         return this.cachedSpaceByIdMap;
@@ -169,10 +176,10 @@ class SpaceService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'SPACE' )
-                  .insert( space );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'SPACE' )
+                .insert( space );
 
         if ( error !== null )
         {
@@ -191,8 +198,8 @@ class SpaceService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'SPACE' )
                 .update( space )
                 .eq( 'id', spaceId );
@@ -213,8 +220,8 @@ class SpaceService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'SPACE' )
                 .delete()
                 .eq( 'id', spaceId );

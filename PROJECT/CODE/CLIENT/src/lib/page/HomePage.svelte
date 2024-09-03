@@ -6,10 +6,12 @@
     import { onMount } from 'svelte';
     import { Link } from 'svelte-routing';
 
-    // -- STATEMENTS
+    // -- VARIABLES
 
     let favoritePropertyArray = [];
     let isLoading = true;
+
+    // -- STATEMENTS
 
     onMount(
         async () =>

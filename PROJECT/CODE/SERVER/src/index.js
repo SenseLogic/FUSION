@@ -86,7 +86,7 @@ fastify.setNotFoundHandler(
 
         let htmlFilePath = path.join( __dirname, htmlFileName );
         let htmlFileContent = fs.readFileSync( htmlFilePath, 'utf8' );
-console.log( htmlFilePath );
+
         reply.type( 'text/html' ).send( htmlFileContent );
     }
     );

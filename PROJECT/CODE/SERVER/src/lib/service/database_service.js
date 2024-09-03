@@ -24,4 +24,3 @@ class DatabaseService
 
 export let databaseService
     = new DatabaseService();
-

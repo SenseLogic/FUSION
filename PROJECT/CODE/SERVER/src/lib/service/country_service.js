@@ -13,7 +13,10 @@ class CountryService
         )
     {
         this.cachedCountryArray = null;
+        this.cachedCountryArrayTimestamp = 0;
+
         this.cachedCountryByCodeMap = null;
+        this.cachedCountryByCodeMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -21,10 +24,10 @@ class CountryService
     async getCountryArray(
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'COUNTRY' )
-                  .select();
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'COUNTRY' )
+                .select();
 
         if ( error !== null )
         {
@@ -40,11 +43,11 @@ class CountryService
         countryCode
         )
     {
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'COUNTRY' )
-                  .select()
-                  .eq( 'code', countryCode );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'COUNTRY' )
+                .select()
+                .eq( 'code', countryCode );
 
         if ( error !== null )
         {
@@ -75,9 +78,11 @@ class CountryService
     async getCachedCountryArray(
         )
     {
-        if ( this.cachedCountryArray === null )
+        if ( this.cachedCountryArray === null
+             || Date.now() > this.cachedCountryArrayTimestamp + 300000 )
         {
             this.cachedCountryArray = await this.getCountryArray();
+            this.cachedCountryArrayTimestamp = Date.now();
         }
 
         return this.cachedCountryArray;
@@ -88,9 +93,11 @@ class CountryService
     async getCachedCountryByCodeMap(
         )
     {
-        if ( this.cachedCountryByCodeMap === null )
+        if ( this.cachedCountryByCodeMap === null
+             || Date.now() > this.cachedCountryByCodeMapTimestamp + 300000 )
         {
             this.cachedCountryByCodeMap = getMapByCode( await this.getCachedCountryArray() );
+            this.cachedCountryByCodeMapTimestamp = Date.now();
         }
 
         return this.cachedCountryByCodeMap;
@@ -104,10 +111,10 @@ class CountryService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
-                  .from( 'COUNTRY' )
-                  .insert( country );
+        let { data, error } =
+            await databaseService.getClient()
+                .from( 'COUNTRY' )
+                .insert( country );
 
         if ( error !== null )
         {
@@ -126,8 +133,8 @@ class CountryService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'COUNTRY' )
                 .update( country )
                 .eq( 'code', countryCode );
@@ -148,8 +155,8 @@ class CountryService
     {
         this.clearCache();
 
-        let { data, error }
-            = await databaseService.getClient()
+        let { data, error } =
+            await databaseService.getClient()
                 .from( 'COUNTRY' )
                 .delete()
                 .eq( 'code', countryCode );

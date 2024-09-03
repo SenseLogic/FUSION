@@ -22,7 +22,8 @@ ENV FUSION_PROJECT_DATABASE_HOST=db.xxx.supabase.co
 ENV FUSION_PROJECT_DATABASE_PASSWORD=xxx
 ENV FUSION_PROJECT_DATABASE_URL=https://xxx.supabase.co
 ENV FUSION_PROJECT_DATABASE_KEY=xxx.xxx.xxx
-ENV FUSION_PROJECT_STORAGE_URL=https://xxx.supabase.co/storage/v1/object/public
+ENV FUSION_PROJECT_MEDIA_URL=https://xxx.supabase.co/storage/v1/object/public
+ENV FUSION_PROJECT_UPLOAD_URL=https://xxx.supabase.co/storage/v1/object/public
 
 EXPOSE 8000
 

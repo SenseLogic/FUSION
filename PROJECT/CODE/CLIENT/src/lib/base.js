@@ -110,3 +110,5 @@ export function getLocalizedWeekdayName(
 {
     return getLocalizedText( weekdayNameArray[ weekdayIndex ] );
 }
+
+// -- STATEMENTS

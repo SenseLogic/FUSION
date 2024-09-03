@@ -13,9 +13,13 @@ export class StorageService
         filePath
         )
     {
-        if ( filePath.startsWith( '/upload/' ) )
+        if ( filePath.startsWith( '/media/' ) )
         {
-            return process.env.PRIVATE_FUSION_PROJECT_STORAGE_URL + filePath;
+            return process.env.FUSION_PROJECT_MEDIA_URL + filePath;
+        }
+        else if ( filePath.startsWith( '/upload/' ) )
+        {
+            return process.env.FUSION_PROJECT_UPLOAD_URL + filePath;
         }
         else
         {
@@ -32,17 +36,14 @@ export class StorageService
     {
         if ( !isNaN( imageWidth ) )
         {
-            if ( imagePath.endsWith( '.jpg' ) )
-            {
-                imagePath += '.' + imageWidth + '.jpg';
-            }
-            else if ( imagePath.endsWith( '.png' ) )
-            {
-                imagePath += '.' + imageWidth + '.png';
-            }
-        }
+            let lastDotCharacterIndex = imagePath.lastIndexOf( '.' );
 
-        return this.getFilePath( imagePath );
+            return imagePath.slice( 0, lastDotCharacterIndex ) + '.' + imageWidth + imagePath.slice( lastDotCharacterIndex );
+        }
+        else
+        {
+            return this.getFilePath( imagePath );
+        }
     }
 
     // -- OPERATIONS
@@ -56,15 +57,15 @@ export class StorageService
         let { data, error } =
             await supabase_service.getClient()
                 .storage
-                .from( process.env.PRIVATE_FUSION_PROJECT_STORAGE_URL )
+                .from( process.env.FUSION_PROJECT_UPLOAD_URL )
                 .upload(
-                    storageFilePath,
-                    localFile,
-                    {
-                        cacheControl: '3600',
-                        upsert: storageFileIsOverwritten
-                    }
-                    );
+                      storageFilePath,
+                      localFile,
+                      {
+                          cacheControl: '3600',
+                          upsert: storageFileIsOverwritten
+                      }
+                      );
 
         if ( error !== null )
         {
@@ -78,4 +79,3 @@ export class StorageService
 // -- VARIABLES
 
 export let storageService = new StorageService();
-
