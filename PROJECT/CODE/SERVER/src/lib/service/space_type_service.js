@@ -14,9 +14,7 @@ class SpaceTypeService
     {
         this.cachedSpaceTypeArray = null;
         this.cachedSpaceTypeArrayTimestamp = 0;
-
         this.cachedSpaceTypeByIdMap = null;
-        this.cachedSpaceTypeByIdMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -78,11 +76,12 @@ class SpaceTypeService
     async getCachedSpaceTypeArray(
         )
     {
-        if ( this.cachedSpaceTypeArray === null 
+        if ( this.cachedSpaceTypeArray === null
              || Date.now() > this.cachedSpaceTypeArrayTimestamp + 300000 )
         {
             this.cachedSpaceTypeArray = await this.getSpaceTypeArray();
             this.cachedSpaceTypeArrayTimestamp = Date.now();
+            this.cachedSpaceTypeByIdMap = null;
         }
 
         return this.cachedSpaceTypeArray;
@@ -93,11 +92,10 @@ class SpaceTypeService
     async getCachedSpaceTypeByIdMap(
         )
     {
-        if ( this.cachedSpaceTypeByIdMap === null 
-             || Date.now() > this.cachedSpaceTypeByIdMapTimestamp + 300000 )
+        if ( this.cachedSpaceTypeByIdMap === null
+             || Date.now() > this.cachedSpaceTypeArrayTimestamp + 300000 )
         {
             this.cachedSpaceTypeByIdMap = getMapById( await this.getCachedSpaceTypeArray() );
-            this.cachedSpaceTypeByIdMapTimestamp = Date.now();
         }
 
         return this.cachedSpaceTypeByIdMap;

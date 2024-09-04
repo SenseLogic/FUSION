@@ -15,9 +15,7 @@ class PropertyService
     {
         this.cachedPropertyArray = null;
         this.cachedPropertyArrayTimestamp = 0;
-
         this.cachedPropertyByIdMap = null;
-        this.cachedPropertyByIdMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -166,11 +164,12 @@ class PropertyService
     async getCachedPropertyArray(
         )
     {
-        if ( this.cachedPropertyArray === null 
+        if ( this.cachedPropertyArray === null
              || Date.now() > this.cachedPropertyArrayTimestamp + 300000 )
         {
             this.cachedPropertyArray = await this.getPropertyArray();
             this.cachedPropertyArrayTimestamp = Date.now();
+            this.cachedPropertyByIdMap = null;
         }
 
         return this.cachedPropertyArray;
@@ -181,11 +180,10 @@ class PropertyService
     async getCachedPropertyByIdMap(
         )
     {
-        if ( this.cachedPropertyByIdMap === null 
-             || Date.now() > this.cachedPropertyByIdMapTimestamp + 300000 )
+        if ( this.cachedPropertyByIdMap === null
+             || Date.now() > this.cachedPropertyArrayTimestamp + 300000 )
         {
             this.cachedPropertyByIdMap = getMapById( await this.getCachedPropertyArray() );
-            this.cachedPropertyByIdMapTimestamp = Date.now();
         }
 
         return this.cachedPropertyByIdMap;

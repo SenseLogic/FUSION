@@ -14,9 +14,7 @@ class CountryService
     {
         this.cachedCountryArray = null;
         this.cachedCountryArrayTimestamp = 0;
-
         this.cachedCountryByCodeMap = null;
-        this.cachedCountryByCodeMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -83,6 +81,7 @@ class CountryService
         {
             this.cachedCountryArray = await this.getCountryArray();
             this.cachedCountryArrayTimestamp = Date.now();
+            this.cachedCountryByCodeMap = null;
         }
 
         return this.cachedCountryArray;
@@ -94,10 +93,9 @@ class CountryService
         )
     {
         if ( this.cachedCountryByCodeMap === null
-             || Date.now() > this.cachedCountryByCodeMapTimestamp + 300000 )
+             || Date.now() > this.cachedCountryArrayTimestamp + 300000 )
         {
             this.cachedCountryByCodeMap = getMapByCode( await this.getCachedCountryArray() );
-            this.cachedCountryByCodeMapTimestamp = Date.now();
         }
 
         return this.cachedCountryByCodeMap;

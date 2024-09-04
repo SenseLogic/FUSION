@@ -14,9 +14,7 @@ class LanguageService
     {
         this.cachedLanguageArray = null;
         this.cachedLanguageArrayTimestamp = 0;
-
         this.cachedLanguageByCodeMap = null;
-        this.cachedLanguageByCodeMapTimestamp = 0;
     }
 
     // -- INQUIRIES
@@ -78,26 +76,26 @@ class LanguageService
     async getCachedLanguageArray(
         )
     {
-        if ( this.cachedLanguageArray === null 
+        if ( this.cachedLanguageArray === null
              || Date.now() > this.cachedLanguageArrayTimestamp + 300000 )
         {
             this.cachedLanguageArray = await this.getLanguageArray();
             this.cachedLanguageArrayTimestamp = Date.now();
+            this.cachedLanguageByCodeMap = null;
         }
 
         return this.cachedLanguageArray;
     }
-    
+
     // ~~
 
     async getCachedLanguageByCodeMap(
         )
     {
-        if ( this.cachedLanguageByCodeMap === null 
-             || Date.now() > this.cachedLanguageByCodeMapTimestamp + 300000 )
+        if ( this.cachedLanguageByCodeMap === null
+             || Date.now() > this.cachedLanguageArrayTimestamp + 300000 )
         {
             this.cachedLanguageByCodeMap = getMapByCode( await this.getCachedLanguageArray() );
-            this.cachedLanguageByCodeMapTimestamp = Date.now();
         }
 
         return this.cachedLanguageByCodeMap;
