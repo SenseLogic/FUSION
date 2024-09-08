@@ -25,8 +25,8 @@ class SupabaseService
         {
             this.client =
                 createServerClient(
-                    process.env.FUSION_PROJECT_DATABASE_URL,
-                        process.env.FUSION_PROJECT_DATABASE_KEY,
+                    process.env.FUSION_PROJECT_SUPABASE_DATABASE_URL,
+                        process.env.FUSION_PROJECT_SUPABASE_DATABASE_KEY,
                         {
                             cookies:
                             {
@@ -80,6 +80,55 @@ class SupabaseService
         }
 
         return this.client;
+    }
+
+    // ~~
+
+    async uploadFile(
+        localFile,
+        storageFilePath,
+        storageFileIsOverwritten = false
+        )
+    {
+        let { data, error } =
+            await this.getClient()
+                .storage
+                .from( process.env.FUSION_PROJECT_SUPABASE_STORAGE_URL )
+                .upload(
+                      storageFilePath,
+                      localFile,
+                      {
+                          cacheControl: '3600',
+                          upsert: storageFileIsOverwritten
+                      }
+                      );
+
+        if ( error !== null )
+        {
+            logError( error );
+        }
+
+        return data;
+    }
+
+    // ~~
+
+    async removeFile(
+        storageFilePath
+        )
+    {
+        let { data, error } =
+            await this.getClient()
+                .storage
+                .from( process.env.FUSION_PROJECT_SUPABASE_STORAGE_URL )
+                .remove( [ storageFilePath ] );
+
+        if ( error !== null )
+        {
+            logError( error );
+        }
+
+        return data;
     }
 }
 

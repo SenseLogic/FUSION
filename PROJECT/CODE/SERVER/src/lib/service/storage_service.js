@@ -1,7 +1,9 @@
 // -- IMPORTS
 
 import { logError } from 'senselogic-gist';
+import { bunnyService } from './bunny_service';
 import { supabaseService } from './supabase_service';
+import { createLimitedImage } from '../base/image';
 
 // -- TYPES
 
@@ -13,13 +15,13 @@ export class StorageService
         filePath
         )
     {
-        if ( filePath.startsWith( '/media/' ) )
+        if ( filePath.startsWith( '/global/' ) )
         {
-            return process.env.FUSION_PROJECT_MEDIA_URL + filePath;
+            return process.env.FUSION_PROJECT_BUNNY_STORAGE_URL + filePath;
         }
         else if ( filePath.startsWith( '/upload/' ) )
         {
-            return process.env.FUSION_PROJECT_UPLOAD_URL + filePath;
+            return process.env.FUSION_PROJECT_SUPABASE_STORAGE_URL + filePath;
         }
         else
         {
@@ -54,25 +56,95 @@ export class StorageService
         storageFileIsOverwritten = false
         )
     {
-        let { data, error } =
-            await supabase_service.getClient()
-                .storage
-                .from( process.env.FUSION_PROJECT_UPLOAD_URL )
-                .upload(
-                      storageFilePath,
-                      localFile,
-                      {
-                          cacheControl: '3600',
-                          upsert: storageFileIsOverwritten
-                      }
-                      );
+        return await supabaseService.uploadFile( localFile, storageFilePath, storageFileIsOverwritten );
+    }
 
-        if ( error !== null )
+    // ~~
+
+    async removeFile(
+        storageFilePath
+        )
+    {
+        return await supabaseService.removeFile( storageFilePath );
+    }
+
+    // ~~
+
+    async uploadGlobalFile(
+        localFile,
+        storageFilePath,
+        storageFileIsOverwritten = false
+        )
+    {
+        return await bunnyService.uploadFile( localFile, storageFilePath, storageFileIsOverwritten );
+    }
+
+    // ~~
+
+    async removeGlobalFile(
+        storageFilePath
+        )
+    {
+        return await bunnyService.removeFile( storageFilePath );
+    }
+
+    // ~~
+
+    async uploadGlobalImageFile(
+        localImageFile,
+        storageFilePath,
+        storageFileIsOverwritten = false,
+        imageWidthArray = [ 640, 1280, 1920, 3840 ],
+        imageQualityArray = [ 80, 80, 80, 80 ]
+        )
+    {
+        await supabaseService.removeFile( storageFilePath );
+
+        for ( let imageIndex = 0;
+              imageIndex < imageWidthArray.length;
+              ++imageIndex )
         {
-            logError( error );
-        }
+            let imageWidth = imageWidthArray[ imageIndex ];
+            let imageQuality = imageQualityArray[ imageIndex ];
 
-        return data;
+            resizedImage =
+                createLimitedImage(
+                    localImageFile,
+                    imageWidth * 9 / 16,
+                    imageQuality
+                    );
+
+            await bunnyService.uploadFile( resizedImage, storageFilePath + '.' + imageWidth + '.avif', storageFileIsOverwritten );
+        }
+    }
+
+    // ~~
+
+    async removeGlobalImageFile(
+        storageFilePath
+        )
+    {
+        return await bunnyService.removeFile( storageFilePath );
+    }
+
+    // ~~
+
+    async uploadGlobalVideoFile(
+        localVideoFile,
+        storageFilePath,
+        storageFileIsOverwritten = false
+        )
+    {
+        return await supabaseService.uploadFile( localVideoFile, storageFilePath, storageFileIsOverwritten );
+    }
+
+    // ~~
+
+    async removeGlobalVideoFile(
+        storageFilePath
+        )
+    {
+        return await bunnyService.removeFile( storageFilePath );
     }
 }
 
