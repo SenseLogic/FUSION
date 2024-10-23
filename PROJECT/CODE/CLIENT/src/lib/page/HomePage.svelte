@@ -43,18 +43,18 @@
     }
 </style>
 
-{ #if isLoading }
+{#if isLoading }
     <div class="hourglass">Loading...</div>
-{ :else }
+{:else}
     <div>
         <h1>Favorite Properties</h1>
-        { #each favoritePropertyArray as property }
+        {#each favoritePropertyArray as property }
             <Link to={ '/property/' + property.id }>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
             </Link>
-        { /each}
+        {/each}
         <Link to="/properties">See more</Link>
     </div>
-{ /if }
+{/if}

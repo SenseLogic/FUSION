@@ -41,17 +41,17 @@
     }
 </style>
 
-{ #if isLoading }
+{#if isLoading }
     <div class="hourglass">Loading...</div>
-{ :else }
+{:else}
     <div>
         <h1>Properties</h1>
-        { #each propertyArray as property }
+        {#each propertyArray as property }
             <Link to={ '/admin/property/' + property.id }>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
             </Link>
-        { /each}
+        {/each}
     </div>
-{ /if }
+{/if}

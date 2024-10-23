@@ -7,12 +7,13 @@ Startup project for hybrid Svelte applications.
 ## Dependencies
 
 *   axios
-*   capacitor
-*   fastify
 *   gist
-*   supabase
+*   flow
 *   svelte
 *   svelte-routing
+*   capacitor
+*   fastify
+*   supabase
 
 ## Version
 

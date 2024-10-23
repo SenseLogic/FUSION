@@ -40,11 +40,11 @@
     }
 </style>
 
-{ #if isLoading }
+{#if isLoading }
     <div class="hourglass">Loading...</div>
-{ :else }
+{:else}
     <div>
         <h1>{ getLocalizedText( property.title ) }</h1>
         <p>{ getLocalizedText( property.description ) }</p>
     </div>
-{ /if }
+{/if}
