@@ -1,4 +1,5 @@
-IncludeFiles .//*.svelte
+IncludeFiles ADMIN//*.svelte
+IncludeFiles CLIENT//*.svelte
 ReadFiles
 Edit text
 ReplaceText
