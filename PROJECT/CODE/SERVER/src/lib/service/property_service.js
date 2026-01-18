@@ -1,8 +1,8 @@
 // -- IMPORTS
 
-import { getMapById, logError } from 'senselogic-gist';
-import { databaseService } from './database_service';
+import { getMapById, logError } from 'senselogic-opus';
 import { spaceService } from './space_service';
+import { supabaseService } from './supabase_service';
 
 // -- FUNCTIONS
 
@@ -60,7 +60,7 @@ class PropertyService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .select();
 
@@ -90,7 +90,7 @@ class PropertyService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .select()
                 .eq( 'isFavorite', true );
@@ -122,7 +122,7 @@ class PropertyService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .select()
                 .eq( 'id', propertyId );
@@ -198,7 +198,7 @@ class PropertyService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .insert( property );
 
@@ -220,7 +220,7 @@ class PropertyService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .update( property )
                 .eq( 'id', propertyId );
@@ -242,7 +242,7 @@ class PropertyService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'PROPERTY' )
                 .delete()
                 .eq( 'id', propertyId );

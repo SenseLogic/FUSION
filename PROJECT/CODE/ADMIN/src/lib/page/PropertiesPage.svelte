@@ -1,15 +1,15 @@
-<script>
+<script runes>
     // -- IMPORTS
 
     import axios from 'axios';
-    import { getLocalizedText } from 'senselogic-gist';
+    import { getLocalizedText } from 'senselogic-lingo';
     import { onMount } from 'svelte';
-    import { Link } from 'svelte-routing';
+    import { link } from '@dvcol/svelte-simple-router/router';
 
     // -- STATEMENTS
 
-    let propertyArray = [];
-    let isLoading = true;
+    let propertyArray = $state([]);
+    let isLoading = $state(true);
 
     onMount(
         async () =>
@@ -47,11 +47,11 @@
     <div>
         <h1>Properties</h1>
         {#each propertyArray as property }
-            <Link to={ '/admin/property/' + property.id }>
+            <a href={ '/admin/property/' + property.id } use:link>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
-            </Link>
+            </a>
         {/each}
     </div>
 {/if}

@@ -1,7 +1,7 @@
 // -- IMPORTS
 
-import { getMapByCode, logError } from 'senselogic-gist';
-import { databaseService } from './database_service';
+import { getMap, logError } from 'senselogic-opus';
+import { supabaseService } from './supabase_service';
 
 // -- FUNCTIONS
 
@@ -23,7 +23,7 @@ class LanguageService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'LANGUAGE' )
                 .select();
 
@@ -42,7 +42,7 @@ class LanguageService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'LANGUAGE' )
                 .select()
                 .eq( 'code', languageCode );
@@ -95,7 +95,7 @@ class LanguageService
         if ( this.cachedLanguageByCodeMap === null
              || Date.now() > this.cachedLanguageArrayTimestamp + 300000 )
         {
-            this.cachedLanguageByCodeMap = getMapByCode( await this.getCachedLanguageArray() );
+            this.cachedLanguageByCodeMap = getMap( await this.getCachedLanguageArray(), 'code' );
         }
 
         return this.cachedLanguageByCodeMap;
@@ -110,7 +110,7 @@ class LanguageService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'LANGUAGE' )
                 .insert( language );
 
@@ -132,7 +132,7 @@ class LanguageService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'LANGUAGE' )
                 .update( language )
                 .eq( 'code', languageCode );
@@ -154,7 +154,7 @@ class LanguageService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'LANGUAGE' )
                 .delete()
                 .eq( 'code', languageCode );

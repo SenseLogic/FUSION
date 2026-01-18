@@ -1,7 +1,7 @@
 // -- IMPORTS
 
-import { getMapById, logError } from 'senselogic-gist';
-import { databaseService } from './database_service';
+import { getMapById, logError } from 'senselogic-opus';
+import { supabaseService } from './supabase_service';
 
 // -- FUNCTIONS
 
@@ -23,7 +23,7 @@ class SpaceTypeService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'SPACE_TYPE' )
                 .select();
 
@@ -42,7 +42,7 @@ class SpaceTypeService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'SPACE_TYPE' )
                 .select()
                 .eq( 'id', spaceTypeId );
@@ -110,7 +110,7 @@ class SpaceTypeService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'SPACE_TYPE' )
                 .insert( spaceType );
 
@@ -132,7 +132,7 @@ class SpaceTypeService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'SPACE_TYPE' )
                 .update( spaceType )
                 .eq( 'id', spaceTypeId );
@@ -154,7 +154,7 @@ class SpaceTypeService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'SPACE_TYPE' )
                 .delete()
                 .eq( 'id', spaceTypeId );

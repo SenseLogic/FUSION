@@ -1,7 +1,7 @@
 // -- IMPORTS
 
-import { getMapByCode, logError } from 'senselogic-gist';
-import { databaseService } from './database_service';
+import { getMap, logError } from 'senselogic-opus';
+import { supabaseService } from './supabase_service';
 
 // -- FUNCTIONS
 
@@ -23,7 +23,7 @@ class CountryService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'COUNTRY' )
                 .select();
 
@@ -42,7 +42,7 @@ class CountryService
         )
     {
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'COUNTRY' )
                 .select()
                 .eq( 'code', countryCode );
@@ -95,7 +95,7 @@ class CountryService
         if ( this.cachedCountryByCodeMap === null
              || Date.now() > this.cachedCountryArrayTimestamp + 300000 )
         {
-            this.cachedCountryByCodeMap = getMapByCode( await this.getCachedCountryArray() );
+            this.cachedCountryByCodeMap = getMap( await this.getCachedCountryArray(), 'code' );
         }
 
         return this.cachedCountryByCodeMap;
@@ -110,7 +110,7 @@ class CountryService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'COUNTRY' )
                 .insert( country );
 
@@ -132,7 +132,7 @@ class CountryService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'COUNTRY' )
                 .update( country )
                 .eq( 'code', countryCode );
@@ -154,7 +154,7 @@ class CountryService
         this.clearCache();
 
         let { data, error } =
-            await databaseService.getClient()
+            await supabaseService.getClient( null, null )
                 .from( 'COUNTRY' )
                 .delete()
                 .eq( 'code', countryCode );

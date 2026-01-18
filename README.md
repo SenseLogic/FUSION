@@ -10,7 +10,7 @@ Startup project for hybrid Svelte applications.
 *   gist
 *   flow
 *   svelte
-*   svelte-routing
+*   svelte-simple-router
 *   capacitor
 *   fastify
 *   supabase

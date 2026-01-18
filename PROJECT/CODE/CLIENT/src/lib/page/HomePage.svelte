@@ -1,15 +1,16 @@
-<script>
+<script runes>
     // -- IMPORTS
 
     import axios from 'axios';
-    import { getLocalizedText } from 'senselogic-gist';
+    import { getLocalizedText } from 'senselogic-lingo';
     import { onMount } from 'svelte';
-    import { Link } from 'svelte-routing';
+    import { link } from '@dvcol/svelte-simple-router/router';
+    import { getHostRoute } from '../base.js';
 
     // -- VARIABLES
 
-    let favoritePropertyArray = [];
-    let isLoading = true;
+    let favoritePropertyArray = $state([]);
+    let isLoading = $state(true);
 
     // -- STATEMENTS
 
@@ -18,7 +19,7 @@
         {
             try
             {
-                let response = await axios.post( '/api/page/home' );
+                let response = await axios.post( getHostRoute( '/api/page/home' ) );
                 favoritePropertyArray = response.data.favoritePropertyArray;
             }
             catch ( error )
@@ -49,12 +50,12 @@
     <div>
         <h1>Favorite Properties</h1>
         {#each favoritePropertyArray as property }
-            <Link to={ '/property/' + property.id }>
+            <a href={ '/property/' + property.id } use:link>
                 <div class="property">
                     <p>{ getLocalizedText( property.title ) }</p>
                 </div>
-            </Link>
+            </a>
         {/each}
-        <Link to="/properties">See more</Link>
+        <a href="/properties" use:link>See more</a>
     </div>
 {/if}

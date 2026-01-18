@@ -1,0 +1,93 @@
+// -- IMPORTS
+
+import { Resend } from 'resend';
+import { logError } from 'senselogic-opus';
+
+// -- TYPES
+
+class ResendService
+{
+    // -- CONSTRUCTORS
+
+    constructor(
+        )
+    {
+        this.client = null;
+        this.key = process.env.FUSION_PROJECT_RESEND_KEY;
+    }
+
+    // -- INQUIRIES
+
+    getClient(
+        )
+    {
+        if ( this.client === null )
+        {
+            this.client = new Resend( this.key );
+        }
+
+        return this.client;
+    }
+
+    // -- OPERATIONS
+
+    async sendMail(
+        sender,
+        recipientArray,
+        subject,
+        emailBody
+        )
+    {
+        let { data, error }
+            = await this.getClient()
+                .emails
+                .send(
+                    {
+                        from: sender,
+                        to: recipientArray,
+                        subject: subject,
+                        html: emailBody
+                    }
+                    );
+
+        if ( error !== null )
+        {
+            logError( error );
+        }
+
+        return data;
+    }
+
+    // ~~
+
+    async sendTemplateEmail(
+        sender,
+        recipientArray,
+        subject,
+        emailTemplateBody
+        )
+    {
+        let { data, error }
+            = await this.getClient()
+                .emails
+                .send(
+                    {
+                        from: sender,
+                        to: recipientArray,
+                        subject: subject,
+                        react: emailTemplateBody
+                    }
+                    );
+
+        if ( error !== null )
+        {
+            logError( error );
+        }
+
+        return data;
+    }
+}
+
+// -- VARIABLES
+
+export let resendService = new ResendService();

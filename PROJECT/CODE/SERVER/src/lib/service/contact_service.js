@@ -1,44 +1,43 @@
 // -- IMPORTS
 
 import { getMapById, logError } from 'senselogic-opus';
-import { supabaseService } from './supabase_service';
-import { spaceTypeService } from './space_type_service';
+import { supabaseService } from './supabase_service.js';
 
 // -- FUNCTIONS
 
-class SpaceService
+class ContactService
 {
     // -- CONSTRUCTORS
 
     constructor(
         )
     {
-        this.cachedSpaceArray = null;
-        this.cachedSpaceArrayTimestamp = 0;
-        this.cachedSpaceByIdMap = null;
+        this.cachedContactArray = null;
+        this.cachedContactArrayTimestamp = 0;
+        this.cachedContactByIdMap = null;
     }
 
     // -- INQUIRIES
 
-    inflateSpaceArray(
-        spaceArray,
-        spaceTypeByIdMap
+    inflateContactArray(
+        contactArray,
+        contactTypeByIdMap
         )
     {
-        for ( let space of spaceArray )
+        for ( let contact of contactArray )
         {
-            space.type = spaceTypeByIdMap[ space.typeId ];
+            contact.type = contactTypeByIdMap[ contact.typeId ];
         }
     }
 
     // ~~
 
-    async getSpaceArray(
+    async getContactArray(
         )
     {
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
+                .from( 'CONTACT' )
                 .select();
 
         if ( error !== null )
@@ -51,15 +50,15 @@ class SpaceService
 
     // ~~
 
-    async getSpaceById(
-        spaceId
+    async getContactById(
+        contactId
         )
     {
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
+                .from( 'CONTACT' )
                 .select()
-                .eq( 'id', spaceId );
+                .eq( 'id', contactId );
 
         if ( error !== null )
         {
@@ -78,31 +77,19 @@ class SpaceService
 
     // ~~
 
-    async getSpaceArrayByPropertyId(
-        propertyId,
-        isInflated = false
+    async getContactArrayByMail(
+        mail
         )
     {
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
+                .from( 'CONTACT' )
                 .select()
-                .eq( 'propertyId', propertyId );
+                .eq( 'mail', mail );
 
         if ( error !== null )
         {
             logError( error );
-        }
-
-        if ( data !== null )
-        {
-            if ( isInflated )
-            {
-                this.inflateSpaceArray(
-                    data,
-                    await spaceTypeService.getCachedSpaceTypeByIdMap()
-                    );
-            }
         }
 
         return data;
@@ -110,15 +97,15 @@ class SpaceService
 
     // ~~
 
-    async getSpaceArrayByPropertyIdArray(
-        propertyIdArray
+    async getContactArrayByMailArray(
+        mailArray
         )
     {
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
+                .from( 'CONTACT' )
                 .select()
-                .in( 'propertyId', propertyIdArray );
+                .in( 'mail', mailArray );
 
         if ( error !== null )
         {
@@ -133,52 +120,52 @@ class SpaceService
     clearCache(
         )
     {
-        this.cachedSpaceArray = null;
-        this.cachedSpaceByIdMap = null;
+        this.cachedContactArray = null;
+        this.cachedContactByIdMap = null;
     }
 
     // ~~
 
-    async getCachedSpaceArray(
+    async getCachedContactArray(
         )
     {
-        if ( this.cachedSpaceArray === null
-             || Date.now() > this.cachedSpaceArrayTimestamp + 300000 )
+        if ( this.cachedContactArray === null
+             || Date.now() > this.cachedContactArrayTimestamp + 300000 )
         {
-            this.cachedSpaceArray = await this.getSpaceArray();
-            this.cachedSpaceArrayTimestamp = Date.now();
-            this.cachedSpaceByIdMap = null;
+            this.cachedContactArray = await this.getContactArray();
+            this.cachedContactArrayTimestamp = Date.now();
+            this.cachedContactByIdMap = null;
         }
 
-        return this.cachedSpaceArray;
+        return this.cachedContactArray;
     }
 
     // ~~
 
-    async getCachedSpaceByIdMap(
+    async getCachedContactByIdMap(
         )
     {
-        if ( this.cachedSpaceByIdMap === null
-             || Date.now() > this.cachedSpaceArrayTimestamp + 300000 )
+        if ( this.cachedContactByIdMap === null
+             || Date.now() > this.cachedContactArrayTimestamp + 300000 )
         {
-            this.cachedSpaceByIdMap = getMapById( await this.getCachedSpaceArray() );
+            this.cachedContactByIdMap = getMapById( await this.getCachedContactArray() );
         }
 
-        return this.cachedSpaceByIdMap;
+        return this.cachedContactByIdMap;
     }
 
     // ~~
 
-    async addSpace(
-        space
+    async addContact(
+        contact
         )
     {
         this.clearCache();
 
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
-                .insert( space );
+                .from( 'CONTACT' )
+                .insert( contact );
 
         if ( error !== null )
         {
@@ -190,18 +177,18 @@ class SpaceService
 
     // ~~
 
-    async setSpaceById(
-        space,
-        spaceId
+    async setContactById(
+        contact,
+        contactId
         )
     {
         this.clearCache();
 
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
-                .update( space )
-                .eq( 'id', spaceId );
+                .from( 'CONTACT' )
+                .update( contact )
+                .eq( 'id', contactId );
 
         if ( error !== null )
         {
@@ -213,17 +200,17 @@ class SpaceService
 
     // ~~
 
-    async removeSpaceById(
-        spaceId
+    async removeContactById(
+        contactId
         )
     {
         this.clearCache();
 
         let { data, error } =
             await supabaseService.getClient( null, null )
-                .from( 'SPACE' )
+                .from( 'CONTACT' )
                 .delete()
-                .eq( 'id', spaceId );
+                .eq( 'id', contactId );
 
         if ( error !== null )
         {
@@ -236,5 +223,5 @@ class SpaceService
 
 // -- VARIABLES
 
-export let spaceService
-    = new SpaceService();
+export let contactService
+    = new ContactService();

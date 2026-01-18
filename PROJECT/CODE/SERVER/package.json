@@ -1,5 +1,6 @@
 {
     "name": "fusion-project-server",
+    "private": true,
     "version": "0.0.1",
     "description": "Fusion project server",
     "main": "dist/index.js",
@@ -12,21 +13,27 @@
         "start": "node dist/index.js"
     },
     "devDependencies": {
-        "esbuild": "^0.20.1",
+        "esbuild": "^0.27.2",
         "esbuild-serve": "^1.0.1",
         "nodemon": "^3.1.0"
     },
     "dependencies": {
-        "@fastify/cookie": "^9.3.1",
-        "@fastify/cors": "^9.0.1",
-        "@fastify/env": "^4.3.0",
-        "@fastify/formbody": "^7.4.0",
-        "@fastify/multipart": "^8.1.0",
-        "@fastify/static": "^7.0.0",
-        "@supabase/ssr": "^0.1.0",
+        "@fastify/cookie": "^11.0.2",
+        "@fastify/cors": "^11.2.0",
+        "@fastify/env": "^5.0.3",
+        "@fastify/formbody": "^8.0.2",
+        "@fastify/multipart": "^9.3.0",
+        "@fastify/static": "^9.0.0",
+        "@supabase/ssr": "^0.8.0",
         "@supabase/supabase-js": "^2.39.7",
-        "dotenv": "^16.4.5",
-        "fastify": "^4.26.0",
-        "senselogic-gist": "^2.0.29"
+        "dotenv": "^17.2.3",
+        "fastify": "^5.6.2",
+        "senselogic-def": "^0.1.21",
+        "senselogic-geo": "^0.1.0",
+        "senselogic-flow": "^0.0.39",
+        "senselogic-lingo": "^0.1.7",
+        "senselogic-opus": "^0.1.0",
+        "senselogic-iota": "^0.1.0",
+        "senselogic-pika": "^0.1.0"
     }
 }

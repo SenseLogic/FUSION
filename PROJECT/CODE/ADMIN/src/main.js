@@ -1,13 +1,19 @@
 // -- IMPORTS
 
+import { mount } from 'svelte';
 import './app.styl';
 import App from './App.svelte';
 
 // -- STATEMENTS
 
-export default app =
-    new App(
-        {
-            target: document.getElementById( 'app' )
+const app = mount(
+    App,
+    {
+        target: document.getElementById( 'app' ),
+        props: {
+            url: window.location.pathname
         }
-        );
+    }
+);
+
+export default app;

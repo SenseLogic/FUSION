@@ -35,10 +35,13 @@ class Controller
 
 class UploadImageController extends Controller
 {
-    async constructor( languageCode )
+    constructor( languageCode )
     {
         super( languageCode );
+    }
 
+    async init( )
+    {
         let file = await this.getUploadedFile( 'File' );
 
         if ( file )
@@ -68,7 +71,9 @@ class UploadImageController extends Controller
             let mediaFilePath = join( mediaFolderPath, targetFileName );
             await createFolder( mediaFolderPath );
 
-            if ( await moveFile( sourceFilePath, mediaFilePath ) )
+            try
+            {
+                await moveFile( sourceFilePath, mediaFilePath );
             {
                 let targetFolderPath = join( __dirname, 'upload', 'image' );
                 let targetFilePath = join( targetFolderPath, targetFileName );
@@ -90,10 +95,14 @@ class UploadImageController extends Controller
                 this.setStatus( 201 );
                 this.setJsonResponse( `/upload/image/${targetFileName}` );
             }
-            else
+            catch ( error )
             {
                 this.setStatus( 400 );
             }
+        }
+        catch ( error )
+        {
+            this.setStatus( 400 );
         }
     }
 
@@ -132,10 +141,13 @@ class UploadImageController extends Controller
 
 class UploadVideoController extends Controller
 {
-    async constructor( languageCode )
+    constructor( languageCode )
     {
         super( languageCode );
+    }
 
+    async init( )
+    {
         let file = await this.getUploadedFile( 'File' );
 
         if ( file )
@@ -145,12 +157,13 @@ class UploadVideoController extends Controller
             let targetFileName = getValidFileName( sourceFileName + '_' + getCurrentDateTimeSuffix() );
             let targetFilePath = join( __dirname, 'upload', 'video', targetFileName );
 
-            if ( await moveFile( sourceFilePath, targetFilePath ) )
+            try
             {
+                await moveFile( sourceFilePath, targetFilePath );
                 this.setStatus( 201 );
                 this.setJsonResponse( `/upload/video/${targetFileName}` );
             }
-            else
+            catch ( error )
             {
                 this.setStatus( 400 );
             }
@@ -164,10 +177,13 @@ class UploadVideoController extends Controller
 
 class UploadDocumentController extends Controller
 {
-    async constructor( languageCode )
+    constructor( languageCode )
     {
         super( languageCode );
+    }
 
+    async init( )
+    {
         let file = await this.getUploadedFile( 'File' );
 
         if ( file )
@@ -177,12 +193,13 @@ class UploadDocumentController extends Controller
             let targetFileName = getValidFileName( sourceFileName + '_' + getCurrentDateTimeSuffix() );
             let targetFilePath = join( __dirname, 'upload', 'document', targetFileName );
 
-            if ( await moveFile( sourceFilePath, targetFilePath ) )
+            try
             {
+                await moveFile( sourceFilePath, targetFilePath );
                 this.setStatus( 201 );
                 this.setJsonResponse( `/upload/document/${targetFileName}` );
             }
-            else
+            catch ( error )
             {
                 this.setStatus( 400 );
             }
@@ -196,10 +213,13 @@ class UploadDocumentController extends Controller
 
 class DeleteFileController extends Controller
 {
-    async constructor( languageCode )
+    constructor( languageCode )
     {
         super( languageCode );
+    }
 
+    async init( )
+    {
         let filePath = join( __dirname, this.getPostValue( 'FilePath' ) );
 
         if ( await fileExists( filePath ) && await removeFile( filePath ) )
@@ -252,7 +272,7 @@ fastify.post(
     '/upload/image', async ( request, reply ) =>
     {
         let controller = new UploadImageController( request.body.language_code );
-        await controller.constructor();
+        await controller.init();
         reply.status( controller.status ).send( controller.jsonResponse );
     }
     );
@@ -261,7 +281,7 @@ fastify.post(
     '/upload/video', async ( request, reply ) =>
     {
         let controller = new UploadVideoController( request.body.language_code );
-        await controller.constructor();
+        await controller.init();
         reply.status( controller.status ).send( controller.jsonResponse );
     }
     );
@@ -270,7 +290,7 @@ fastify.post(
     '/upload/document', async ( request, reply ) =>
     {
         let controller = new UploadDocumentController( request.body.language_code );
-        await controller.constructor();
+        await controller.init();
         reply.status( controller.status ).send( controller.jsonResponse );
     }
     );
@@ -279,7 +299,7 @@ fastify.post(
     '/delete/file', async ( request, reply ) =>
     {
         let controller = new DeleteFileController( request.body.language_code );
-        await controller.constructor();
+        await controller.init();
         reply.status( controller.status ).send( controller.jsonResponse );
     }
     );

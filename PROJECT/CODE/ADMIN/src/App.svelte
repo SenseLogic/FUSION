@@ -1,29 +1,44 @@
-<script>
+<script runes>
     // -- IMPORTS
 
-    import { Router, Link, Route } from 'svelte-routing';
+    import { RouterView } from '@dvcol/svelte-simple-router/components';
+    import { link } from '@dvcol/svelte-simple-router/router';
     import HomePage from './lib/page/HomePage.svelte';
     import PropertiesPage from './lib/page/PropertiesPage.svelte';
     import PropertyPage from './lib/page/PropertyPage.svelte';
 
-    export let url = "";
+    // -- PROPS
+
+    let { url = "" } = $props();
+
+    // -- ROUTES
+
+    const routes = [
+        { 
+            name: 'home', 
+            path: '/admin', 
+            component: HomePage 
+        },
+        { 
+            name: 'properties', 
+            path: '/admin/properties', 
+            component: PropertiesPage 
+        },
+        { 
+            name: 'property', 
+            path: '/admin/property/:id', 
+            component: PropertyPage 
+        }
+    ];
+
+    const options = { routes, url };
 </script>
 
-<Router { url }>
-    <img class="logo" src="/admin/logo.png" alt="logo">
-    <nav>
-        <Link to="/admin">Home</Link>
-        <Link to="/admin/properties">Properties</Link>
-    </nav>
-    <div>
-        <Route path="/admin">
-            <HomePage/>
-        </Route>
-        <Route path="/admin/properties">
-            <PropertiesPage/>
-        </Route>
-        <Route path="/admin/property/:id" let:params>
-            <PropertyPage id="{ params.id }"/>
-        </Route>
-    </div>
-</Router>
+<img class="logo" src="/admin/logo.png" alt="logo">
+<nav>
+    <a href="/admin" use:link>Home</a>
+    <a href="/admin/properties" use:link>Properties</a>
+</nav>
+<div>
+    <RouterView {options} />
+</div>

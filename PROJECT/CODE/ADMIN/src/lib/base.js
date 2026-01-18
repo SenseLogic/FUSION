@@ -1,6 +1,6 @@
 // -- IMPORTS
 
-import { getLocalizedText } from 'senselogic-gist';
+import { getLocalizedText } from 'senselogic-lingo';
 import { Capacitor } from '@capacitor/core';
 
 // -- CONSTANTS
@@ -33,7 +33,7 @@ export let weekdayNameArray =
         'Wednesday¨fr:Mercredi',
         'Thursday¨fr:Jeudi',
         'Friday¨fr:Vendredi',
-        'Saterday¨fr:Samedi',
+        'Saturday¨fr:Samedi',
         'Sunday¨fr:Dimanche'
     ];
 
@@ -98,7 +98,7 @@ export function getLocalizedMonthName(
     maximumCharacterCount = undefined
     )
 {
-    return getLocalizedText( monthNameArray[ monthIndex ] );
+    return getShortenedName( getLocalizedText( monthNameArray[ monthIndex ] ), maximumCharacterCount );
 }
 
 // ~~
@@ -108,5 +108,5 @@ export function getLocalizedWeekdayName(
     maximumCharacterCount = undefined
     )
 {
-    return getLocalizedText( weekdayNameArray[ weekdayIndex ] );
+    return getShortenedName( getLocalizedText( weekdayNameArray[ weekdayIndex ] ), maximumCharacterCount );
 }
