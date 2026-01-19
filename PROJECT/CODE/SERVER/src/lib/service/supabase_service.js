@@ -13,9 +13,9 @@ class SupabaseService
     constructor(
         )
     {
-        this.client = null;
-        this.databaseUrl = process.env.FUSION_PROJECT_SUPABASE_DATABASE_URL;
+        this.anonymousClient = null;
         this.databaseKey = process.env.FUSION_PROJECT_SUPABASE_DATABASE_KEY;
+        this.databaseUrl = process.env.FUSION_PROJECT_SUPABASE_DATABASE_URL;
         this.storageName = process.env.FUSION_PROJECT_SUPABASE_STORAGE_NAME;
         this.storageUrl = process.env.FUSION_PROJECT_SUPABASE_STORAGE_URL;
     }
@@ -31,72 +31,107 @@ class SupabaseService
 
     // -- OPERATIONS
 
+    getAnonymousClient(
+        request,
+        reply
+        )
+    {
+        if ( this.anonymousClient === null )
+        {
+            this.anonymousClient = createServerClient( this.databaseUrl, this.databaseKey );
+        }
+
+        return this.anonymousClient;
+    }
+
+    // ~~
+
+    getAuthenticatedClient(
+        request,
+        reply
+        )
+    {
+        return (
+            createServerClient(
+                this.databaseUrl,
+                this.databaseKey,
+                {
+                    cookies:
+                    {
+                        getAll:
+                            ( ) =>
+                            {
+                                if ( request && request.cookies )
+                                {
+                                    return Object.keys( request.cookies ).map(
+                                        ( key ) =>
+                                        ( 
+                                            {
+                                                name: key,
+                                                value: decodeURIComponent( request.cookies[ key ] ?? '' )
+                                            } 
+                                        )
+                                        );
+                                }
+                                else
+                                {
+                                    return [];
+                                }
+                            },
+                        set:
+                            ( cookie ) =>
+                            {
+                                if ( reply )
+                                {
+                                    reply.setCookie(
+                                        cookie.name,
+                                        encodeURIComponent( cookie.value ),
+                                        {
+                                            ...cookie.options,
+                                            sameSite: 'Lax',
+                                            httpOnly: true
+                                        }
+                                        );
+                                }
+                            },
+                        remove:
+                            ( cookie ) =>
+                            {
+                                if ( reply )
+                                {
+                                    reply.clearCookie(
+                                        cookie.name,
+                                        {
+                                            ...cookie.options,
+                                            httpOnly: true
+                                        }
+                                        );
+                                }
+                            }
+                    }
+                }
+                )
+            );
+    }
+
+    // ~~ 
+
+    
     getClient(
         request,
         reply
         )
     {
-        if ( this.client === null )
+        if ( !request || !reply )
         {
-            this.client =
-                createServerClient(
-                    this.databaseUrl,
-                    this.databaseKey,
-                    {
-                        cookies:
-                        {
-                            get:
-                                ( key ) =>
-                                {
-                                    if ( request
-                                            && request.cookies )
-                                    {
-                                        return decodeURIComponent( request.cookies[ key ] ?? '' )
-                                    }
-                                    else
-                                    {
-                                        return '';
-                                    }
-                                },
-                            set:
-                                ( key, value, options ) =>
-                                {
-                                    if ( reply )
-                                    {
-                                        reply.cookie(
-                                            key,
-                                            encodeURIComponent( value ),
-                                            {
-                                                ...options,
-                                                sameSite: 'Lax',
-                                                httpOnly: true
-                                            }
-                                            );
-                                    }
-                                },
-                            remove:
-                                ( key, options ) =>
-                                {
-                                    if ( reply )
-                                    {
-                                        reply.cookie(
-                                            key,
-                                            '',
-                                            {
-                                                ...options,
-                                                httpOnly: true
-                                            }
-                                            );
-                                    }
-                                }
-                        }
-                    }
-                    );
+            return this.getAnonymousClient( request, reply );
         }
-
-        return this.client;
+        else
+        {
+            return this.getAuthenticatedClient( request, reply );
+        }
     }
-
+    
     // ~~
 
     async uploadFile(

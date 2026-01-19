@@ -2,6 +2,7 @@
 
 import dotenv from 'dotenv';
 import Fastify from 'fastify';
+import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import fs from 'fs';
@@ -16,6 +17,8 @@ import { supabaseService } from './lib/service/supabase_service';
 dotenv.config();
 
 let fastify = Fastify( { logger: true } );
+
+fastify.register( fastifyCookie );
 
 fastify.register(
     fastifyCors,

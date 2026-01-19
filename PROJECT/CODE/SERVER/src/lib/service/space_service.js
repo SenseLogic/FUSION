@@ -170,13 +170,15 @@ class SpaceService
     // ~~
 
     async addSpace(
-        space
+        space,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'SPACE' )
                 .insert( space );
 
@@ -192,13 +194,15 @@ class SpaceService
 
     async setSpaceById(
         space,
-        spaceId
+        spaceId,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'SPACE' )
                 .update( space )
                 .eq( 'id', spaceId );
@@ -214,13 +218,15 @@ class SpaceService
     // ~~
 
     async removeSpaceById(
-        spaceId
+        spaceId,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'SPACE' )
                 .delete()
                 .eq( 'id', spaceId );

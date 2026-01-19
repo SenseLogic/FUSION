@@ -192,13 +192,15 @@ class PropertyService
     // ~~
 
     async addProperty(
-        property
+        property,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'PROPERTY' )
                 .insert( property );
 
@@ -214,13 +216,15 @@ class PropertyService
 
     async setPropertyById(
         property,
-        propertyId
+        propertyId,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'PROPERTY' )
                 .update( property )
                 .eq( 'id', propertyId );
@@ -236,13 +240,15 @@ class PropertyService
     // ~~
 
     async removePropertyById(
-        propertyId
+        propertyId,
+        request,
+        reply
         )
     {
         this.clearCache();
 
         let { data, error } =
-            await supabaseService.getClient( null, null )
+            await supabaseService.getClient( request, reply )
                 .from( 'PROPERTY' )
                 .delete()
                 .eq( 'id', propertyId );
