@@ -1,2 +1,3 @@
-"%TOOL%/NANO/nano" --convert-tool-path "%TOOL%/IMAGE_MAGICK/convert" --keep --recursive image/ ../CODE/CLIENT/public/image/
+call make_folder_images profile %1
+call make_folder_images property %1
 pause

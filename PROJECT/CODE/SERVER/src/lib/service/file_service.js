@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 import fs from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { createCappedImage, createCoveredImage } from 'senselogic-pixi';
+import { createCappedImage, createCoveredImage } from 'senselogic-pika';
 import { promisify } from 'util';
 import { bunnyService } from './bunny_service.js';
 import { supabaseService } from './supabase_service.js';
