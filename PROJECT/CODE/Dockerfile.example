@@ -9,12 +9,16 @@ RUN yarn install && yarn run build && rm -rf node_modules
 WORKDIR /app/CLIENT
 RUN yarn install && yarn run build && rm -rf node_modules
 
+WORKDIR /app/ADMIN
+RUN yarn install && yarn run build && rm -rf node_modules
+
 FROM node:lts-alpine
 
 WORKDIR /app
 
 COPY --from=builder /app/SERVER/dist .
 COPY --from=builder /app/CLIENT/dist ./public
+COPY --from=builder /app/ADMIN/dist ./public/admin
 
 ENV HOST 0.0.0.0
 ENV PORT 8000
