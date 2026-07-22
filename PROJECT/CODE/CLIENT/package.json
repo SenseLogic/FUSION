@@ -1,0 +1,34 @@
+{
+    "name": "fusion-project",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "start": "vite preview"
+    },
+    "devDependencies": {
+        "@capacitor/cli": "^8.0.0",
+        "@sveltejs/vite-plugin-svelte": "^6.2.3",
+        "stylus": "^0.64.0",
+        "svelte": "^5.46.1",
+        "typescript": "^5.9.2",
+        "vite": "^7.3.1"
+    },
+    "dependencies": {
+        "@capacitor/android": "^8.0.0",
+        "@capacitor/core": "^8.0.0",
+        "axios": "^1.6.7",
+        "senselogic-def": "^0.1.21",
+        "senselogic-flow": "^0.0.39",
+        "senselogic-lingo": "^0.1.7",
+        "senselogic-opus": "^0.1.0",
+        "senselogic-iota": "^0.1.0",
+        "@dvcol/svelte-simple-router": "^1.0.0"
+    },
+    "resolutions": {
+        "tar": "^7.0.0"
+    }
+}

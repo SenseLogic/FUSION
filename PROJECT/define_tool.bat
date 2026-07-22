@@ -1,0 +1,2 @@
+setx TOOL "C:\WORK\PROJECT\TOOL"
+pause

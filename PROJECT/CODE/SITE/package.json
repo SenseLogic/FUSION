@@ -1,0 +1,49 @@
+{
+    "name": "fusion-project-site",
+    "private": true,
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev --port 8000 --host 0.0.0.0",
+        "build": "vite build",
+        "preview": "vite preview --port 8000 --host 0.0.0.0",
+        "start": "node build/index.js",
+        "prepare": "svelte-kit sync || echo ''",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@sveltejs/adapter-node": "^5.4.0",
+        "@sveltejs/kit": "^2.63.0",
+        "@sveltejs/vite-plugin-svelte": "^7.1.2",
+        "@types/node": "^24",
+        "eslint": "^10.4.1",
+        "eslint-plugin-svelte": "^3.19.0",
+        "globals": "^17.6.0",
+        "stylus": "^0.64.0",
+        "svelte": "^5.56.1",
+        "svelte-check": "^4.6.0",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.60.1",
+        "vite": "^8.0.16"
+    },
+    "dependencies": {
+        "@supabase/ssr": "^0.8.0",
+        "@supabase/supabase-js": "^2.39.7",
+        "axios": "^1.6.7",
+        "date-fns": "^4.1.0",
+        "dotenv": "^17.2.3",
+        "resend": "^6.12.2",
+        "senselogic-def": "^0.1.21",
+        "senselogic-flow": "^0.0.39",
+        "senselogic-geo": "^0.1.0",
+        "senselogic-iota": "^0.1.0",
+        "senselogic-lingo": "^0.1.7",
+        "senselogic-opus": "^0.1.0",
+        "senselogic-pika": "^0.1.0",
+        "sharp": "^0.34.4",
+        "stripe": "^22.1.0"
+    }
+}
