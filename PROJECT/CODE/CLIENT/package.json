@@ -20,13 +20,13 @@
     "dependencies": {
         "@capacitor/android": "^8.0.0",
         "@capacitor/core": "^8.0.0",
+        "@dvcol/svelte-simple-router": "^1.0.0",
         "axios": "^1.6.7",
         "senselogic-def": "^0.1.21",
         "senselogic-flow": "^0.0.39",
-        "senselogic-lingo": "^0.1.7",
-        "senselogic-opus": "^0.1.0",
         "senselogic-iota": "^0.1.0",
-        "@dvcol/svelte-simple-router": "^1.0.0"
+        "senselogic-lingo": "^0.1.7",
+        "senselogic-opus": "^0.1.0"
     },
     "resolutions": {
         "tar": "^7.0.0"
