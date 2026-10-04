@@ -102,6 +102,46 @@ class BunnyService {
       return null;
     }
   }
+
+  // ~~
+
+  async downloadImageFile(storageFilePath: string, format: string | undefined = undefined, width: number | undefined = undefined, quality: number | undefined = undefined ): Promise<Uint8Array> {
+    let fileUrl: string = this.getFileUrl(storageFilePath);
+    let queryParameterPartArray: string[] = [];
+
+    if (format !== undefined) {
+      queryParameterPartArray.push("format=" + encodeURIComponent(format));
+    }
+
+    if (width !== undefined) {
+      queryParameterPartArray.push("width=" + String(width));
+    }
+
+    if (quality !== undefined) {
+      queryParameterPartArray.push("quality=" + String(quality));
+    }
+
+    if (queryParameterPartArray.length > 0) {
+      fileUrl += "?" + queryParameterPartArray.join("&");
+    }
+
+    try {
+      const response = await fetch(fileUrl, {
+        headers: { AccessKey: this.apiKey ?? "" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download image file: " + response.statusText);
+      }
+
+      const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+
+      return new Uint8Array(arrayBuffer);
+    } catch (error) {
+      console.error("Error downloading image file from Bunny CDN:", error);
+      throw error;
+    }
+  }
 }
 
 // -- VARIABLES
